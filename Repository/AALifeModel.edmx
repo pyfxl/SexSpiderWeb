@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AALifeModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AALifeModelStoreContainer">
+    <EntitySet Name="SexSpider" EntityType="AALifeModel.Store.SexSpider" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="SexSpider">
+    <Key>
+      <PropertyRef Name="SiteId" />
+    </Key>
+    <Property Name="SiteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SiteRank" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="VipLevel" Type="tinyint" Nullable="false" />
+    <Property Name="IsHided" Type="tinyint" Nullable="false" />
+    <Property Name="SiteName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ListPage" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="PageEncode" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="Domain" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="SiteLink" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="ListDiv" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ImageDiv" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="PageDiv" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="PageLevel" Type="tinyint" Nullable="false" />
+    <Property Name="ListFilter" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="ImageFilter" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="PageFilter" Type="nvarchar" Nullable="true" MaxLength="50" />
+  </EntityType>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="AALifeModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="AALifeDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="SexSpider" EntityType="AALifeModel.SexSpider" />
+        </EntityContainer>
+        <EntityType Name="SexSpider">
+          <Key>
+            <PropertyRef Name="SiteId" />
+          </Key>
+          <Property Name="SiteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteRank" Type="String" Nullable="false" />
+          <Property Name="VipLevel" Type="Byte" Nullable="false" />
+          <Property Name="IsHided" Type="Byte" Nullable="false" />
+          <Property Name="SiteName" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="ListPage" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="PageEncode" Type="String" Nullable="false" MaxLength="10" />
+          <Property Name="Domain" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="SiteLink" Type="String" Nullable="false" MaxLength="100" />
+          <Property Name="ListDiv" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="ImageDiv" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="PageDiv" Type="String" Nullable="true" MaxLength="50" />
+          <Property Name="PageLevel" Type="Byte" Nullable="false" />
+          <Property Name="ListFilter" Type="String" Nullable="true" MaxLength="50" />
+          <Property Name="ImageFilter" Type="String" Nullable="true" MaxLength="50" />
+          <Property Name="PageFilter" Type="String" Nullable="true" MaxLength="50" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AALifeModelStoreContainer" CdmEntityContainer="AALifeDbContext">
+    <EntitySetMapping Name="SexSpider">
+      <EntityTypeMapping TypeName="IsTypeOf(AALifeModel.SexSpider)">
+        <MappingFragment StoreEntitySet="SexSpider">
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="SiteRank" ColumnName="SiteRank" />
+          <ScalarProperty Name="VipLevel" ColumnName="VipLevel" />
+          <ScalarProperty Name="IsHided" ColumnName="IsHided" />
+          <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+          <ScalarProperty Name="ListPage" ColumnName="ListPage" />
+          <ScalarProperty Name="PageEncode" ColumnName="PageEncode" />
+          <ScalarProperty Name="Domain" ColumnName="Domain" />
+          <ScalarProperty Name="SiteLink" ColumnName="SiteLink" />
+          <ScalarProperty Name="ListDiv" ColumnName="ListDiv" />
+          <ScalarProperty Name="ImageDiv" ColumnName="ImageDiv" />
+          <ScalarProperty Name="PageDiv" ColumnName="PageDiv" />
+          <ScalarProperty Name="PageLevel" ColumnName="PageLevel" />
+          <ScalarProperty Name="ListFilter" ColumnName="ListFilter" />
+          <ScalarProperty Name="ImageFilter" ColumnName="ImageFilter" />
+          <ScalarProperty Name="PageFilter" ColumnName="PageFilter" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

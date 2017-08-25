@@ -1,0 +1,13 @@
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\Repository.dll.config
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\Repository.dll
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\Repository.pdb
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\EntityFramework.dll
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\EntityFramework.SqlServer.dll
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\System.Net.Http.dll
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\EntityFramework.xml
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\EntityFramework.SqlServer.xml
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\System.Net.Http.xml
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\zh-Hans\EntityFramework.resources.dll
+D:\fxlweb\SexSpiderWeb\Repository\bin\Release\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\fxlweb\SexSpiderWeb\Repository\obj\Release\Repository.dll
+D:\fxlweb\SexSpiderWeb\Repository\obj\Release\Repository.pdb
