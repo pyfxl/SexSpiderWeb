@@ -18,9 +18,9 @@ public partial class SexSpider_List : System.Web.UI.Page
     }
 
     [WebMethod(EnableSession = true)]
-    public static string CheckSiteLink(string siteLink, string encoding)
+    public static string CheckSiteLink(string siteLink, string encoding, string domain)
     {
-        string content = Business.SiteHelper.GetHtmlContent(siteLink, encoding);
+        string content = BusinessBLL.SiteHelper.GetHtmlContent(siteLink, encoding, domain);
 
         return "OK";
     }

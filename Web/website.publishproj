@@ -44,7 +44,7 @@ website.publishproj
     </AssemblyAttributes>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Business\Business.csproj">
+    <ProjectReference Include="..\Business\BusinessBLL.csproj">
       <Project>{F66B56D7-9CA0-480A-A967-BAD6E38303F9}</Project>
       <Name>Business</Name>
     </ProjectReference>

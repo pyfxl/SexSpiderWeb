@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Business.Filter
+namespace BusinessBLL.Filter
 {
     public class FilterChain
     {
@@ -28,7 +29,7 @@ namespace Business.Filter
 
             return str;
         }
-
+        
         public int Count()
         {
             return this.list.Count();

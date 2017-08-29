@@ -30,5 +30,7 @@ namespace Repository
         public string ListFilter { get; set; }
         public string ImageFilter { get; set; }
         public string PageFilter { get; set; }
+        public string DocType { get; set; }
+        public string SiteFilter { get; set; }
     }
 }

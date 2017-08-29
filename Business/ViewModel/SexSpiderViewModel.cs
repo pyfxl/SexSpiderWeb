@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Business.ViewModel
+namespace BusinessBLL.ViewModel
 {
     /// <summary>
     /// BusinessViewModel 的摘要说明

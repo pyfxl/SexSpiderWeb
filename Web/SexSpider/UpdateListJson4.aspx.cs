@@ -11,12 +11,19 @@ public partial class SexSpider_UpdateListJson4 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        Business.SiteService service = new Business.SiteService();
+        if (!IsPostBack)
+        {
+            BusinessBLL.SiteService service = new BusinessBLL.SiteService();
 
-        string jsonHtml = Request["models"];
+            string jsonHtml = Request["models"];
 
-        if (jsonHtml == null || jsonHtml == "") return;
+            if (jsonHtml == null || jsonHtml == "") return;
 
-        service.UpdateSiteList(jsonHtml);
+            service.UpdateSiteList(jsonHtml);
+
+            //Response.Write("callback()");
+            //Response.End();
+        }
+
     }
 }

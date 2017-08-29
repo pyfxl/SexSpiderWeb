@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 08/20/2017 21:44:21
--- Generated from EDMX file: D:\fxlweb\AALifeWeb2015\Repository\AALifeModel.edmx
+-- Date Created: 08/29/2017 14:57:07
+-- Generated from EDMX file: D:\fxlweb\SexSpiderWeb\Repository\AALifeModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -33,21 +33,23 @@ GO
 -- Creating table 'SexSpider'
 CREATE TABLE [dbo].[SexSpider] (
     [SiteId] int IDENTITY(1,1) NOT NULL,
-    [SiteRank] nvarchar(max)  NOT NULL,
+    [SiteRank] nvarchar(10)  NOT NULL,
     [VipLevel] tinyint  NOT NULL,
     [IsHided] tinyint  NOT NULL,
     [SiteName] nvarchar(50)  NOT NULL,
-    [ListPage] nvarchar(50)  NOT NULL,
+    [ListPage] nvarchar(200)  NOT NULL,
     [PageEncode] nvarchar(10)  NOT NULL,
     [Domain] nvarchar(50)  NOT NULL,
-    [SiteLink] nvarchar(100)  NOT NULL,
+    [SiteLink] nvarchar(200)  NOT NULL,
     [ListDiv] nvarchar(50)  NOT NULL,
     [ImageDiv] nvarchar(50)  NOT NULL,
     [PageDiv] nvarchar(50)  NULL,
     [PageLevel] tinyint  NOT NULL,
     [ListFilter] nvarchar(50)  NULL,
     [ImageFilter] nvarchar(50)  NULL,
-    [PageFilter] nvarchar(50)  NULL
+    [PageFilter] nvarchar(50)  NULL,
+    [DocType] nvarchar(10)  NULL,
+    [SiteFilter] nvarchar(50)  NULL
 );
 GO
 

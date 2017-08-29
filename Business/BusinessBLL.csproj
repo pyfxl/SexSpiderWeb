@@ -7,8 +7,8 @@
     <ProjectGuid>{F66B56D7-9CA0-480A-A967-BAD6E38303F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Business</RootNamespace>
-    <AssemblyName>Business</AssemblyName>
+    <RootNamespace>BusinessBLL</RootNamespace>
+    <AssemblyName>BusinessBLL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -68,7 +68,9 @@
   <ItemGroup>
     <Compile Include="Filter\FilterChain.cs" />
     <Compile Include="Filter\GetImageFilter.cs" />
+    <Compile Include="Filter\GetJpgFilter.cs" />
     <Compile Include="Filter\GetSpanFilter.cs" />
+    <Compile Include="Filter\GetTextareaFilter.cs" />
     <Compile Include="Filter\GetTitleFilter.cs" />
     <Compile Include="Filter\IFilter.cs" />
     <Compile Include="Filter\NoEmFilter.cs" />
@@ -77,8 +79,10 @@
     <Compile Include="Filter\NoImageFilter.cs" />
     <Compile Include="Filter\NoNumberFilter.cs" />
     <Compile Include="Filter\NoSpanFilter.cs" />
+    <Compile Include="Filter\Site58_Filter.cs" />
     <Compile Include="Filter\Site55_Filter.cs" />
     <Compile Include="Filter\SplitTitleFilter.cs" />
+    <Compile Include="Filter\TestFilter.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\ListModel.cs" />
     <Compile Include="ViewModel\SexSpiderViewModel.cs" />

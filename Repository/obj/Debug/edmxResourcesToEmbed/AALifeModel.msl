@@ -20,6 +20,8 @@
           <ScalarProperty Name="ListFilter" ColumnName="ListFilter" />
           <ScalarProperty Name="ImageFilter" ColumnName="ImageFilter" />
           <ScalarProperty Name="PageFilter" ColumnName="PageFilter" />
+          <ScalarProperty Name="DocType" ColumnName="DocType" />
+          <ScalarProperty Name="SiteFilter" ColumnName="SiteFilter" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

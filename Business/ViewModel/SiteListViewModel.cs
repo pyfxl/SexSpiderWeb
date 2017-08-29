@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Business.ViewModel
+namespace BusinessBLL.ViewModel
 {
     /// <summary>
     /// SiteListViewModel 的摘要说明
@@ -33,6 +33,8 @@ namespace Business.ViewModel
         public string listfilter { get; set; }
         public string imagefilter { get; set; }
         public string pagefilter { get; set; }
-
+        public string doctype { get; set; }
+        public string sitefilter { get; set; }
+        
     }
 }

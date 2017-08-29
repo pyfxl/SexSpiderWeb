@@ -26,7 +26,16 @@
 </head>
 <body>
     <div id="main">
-        <div id="grid"></div>
+        <div id="grid"></div>        
+        <script type="text/x-kendo-template" id="template">
+            <div class="refreshBtnContainer">
+                <a href="\\#" class="k-pager-refresh k-link k-button" title="Refresh"><span class="k-icon k-i-reload"></span></a>
+            </div>
+            <div class="toolbar">
+                <label class="category-label" for="category">Show products by category:</label>
+                <input type="search" id="category" style="width: 150px"/>
+            </div>
+        </script>
     </div>
     <script>
         $(document).ready(function () {
@@ -35,7 +44,8 @@
                     transport: {
                         read: {
                             url: "GetListJson4.aspx",
-                            dataType: "json"
+                            dataType: "json",
+                            cache: false
                         },
                         update: {
                             url: "UpdateListJson4.aspx",
@@ -43,12 +53,14 @@
                             type: "POST"
                         },
                         destroy: {
-                            url: "",
-                            dataType: "json"
+                            url: "RemoveListJson4.aspx",
+                            dataType: "json",
+                            type: "POST"
                         },
                         create: {
-                            url: "",
-                            dataType: "json"
+                            url: "AddListJson4.aspx",
+                            dataType: "json",
+                            type: "POST"
                         },
                         parameterMap: function (options, operation) {
                             if (operation !== "read" && options.models) {
@@ -68,12 +80,14 @@
                                 sitename: { type: "string" },
                                 listpage: { type: "string" },
                                 pageencode: { type: "string" },
+                                doctype: { type: "string" },
                                 domain: { type: "string" },
                                 sitelink: { type: "string" },
                                 listdiv: { type: "string" },
                                 imagediv: { type: "string" },
                                 pagediv: { type: "string" },
                                 pagelevel: { type: "number" },
+                                sitefilter: { type: "string" },
                                 listfilter: { type: "string" },
                                 imagefilter: { type: "string" },
                                 pagefilter: { type: "string" }
@@ -83,13 +97,16 @@
                     requestEnd: function (e) {
                         if (e.type !== "read") {
                             $("#grid").data("kendoGrid").dataSource.read();
+                            //window.location.reload();
                         }
                     }
                 },
                 navigatable: true,
-                toolbar: ["create", "save", "cancel"],
+                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新" }],
+                //toolbar: kendo.template($("#template").html()),
                 columns: [
                     {
+                        template: "#:siteid# <a class=\"k-icon k-i-delete k-grid-delete\" href=\"javascript:;\"></a>",
                         field: "siteid",
                         title: "编号",
                         width: 60
@@ -117,13 +134,18 @@
                     },
                     {
                         field: "listpage",
-                        title: "下页页面",
+                        title: "下一页",
                         width: 200
                     },
                     {
                         field: "pageencode",
                         title: "编码",
-                        width: 100
+                        width: 80
+                    },
+                    {
+                        field: "doctype",
+                        title: "类型",
+                        width: 60
                     },
                     {
                         field: "domain",
@@ -157,24 +179,73 @@
                         width: 60
                     },
                     {
+                        field: "sitefilter",
+                        title: "站点过滤",
+                        width: 150
+                    },
+                    {
                         field: "listfilter",
                         title: "列表过滤",
-                        width: 200
+                        width: 150
                     },
                     {
                         field: "imagefilter",
                         title: "图片过滤",
-                        width: 200
+                        width: 150
                     },
                     {
                         field: "pagefilter",
                         title: "分页过滤",
-                        width: 200
+                        width: 150
                     }
                 ],
                 editable: true
             });
         });
+
+        $("#grid").on("click", ".k-grid-refresh", function () {
+            //custom actions
+            $(".k-grid-content table[role='grid'] tr").each(function (i, v) {
+
+                var $title = $(v).find("td").eq(4);
+
+                var _url = $(v).find("td").eq(8).text();
+                var _encode = $(v).find("td").eq(6).text();
+
+                setTimeout(function () {
+                    $.ajax({
+                        type: "POST",
+                        //async: false,
+                        url: "GetSiteJson4.aspx?_url=" + encodeURIComponent(_url) + "&_encode=" + _encode,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            $title.find("a").css("color", "green");
+                            f_loading($title, false);
+                        },
+                        error: function (e) {
+                            $title.find("a").css("color", "red");
+                            f_loading($title, false);
+                        },
+                        beforeSend: function () {
+                            f_loading($title, true);
+                        }
+                    });
+                }, 500 * i);
+
+            });
+        });
+
+        function f_loading(obj, show) {
+            if (show) {
+                obj.append("<img src='../theme/kendoui/Default/loading.gif' style='padding-left: 5px;' />");
+            } else {
+                obj.find("img").remove();
+            }
+        }
     </script>
+    <style>
+        
+    </style>
 </body>
 </html>

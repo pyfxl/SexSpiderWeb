@@ -8,14 +8,14 @@
       <PropertyRef Name="SiteId" />
     </Key>
     <Property Name="SiteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="SiteRank" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SiteRank" Type="nvarchar" Nullable="false" MaxLength="10" />
     <Property Name="VipLevel" Type="tinyint" Nullable="false" />
     <Property Name="IsHided" Type="tinyint" Nullable="false" />
     <Property Name="SiteName" Type="nvarchar" Nullable="false" MaxLength="50" />
-    <Property Name="ListPage" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ListPage" Type="nvarchar" Nullable="false" MaxLength="200" />
     <Property Name="PageEncode" Type="nvarchar" Nullable="false" MaxLength="10" />
     <Property Name="Domain" Type="nvarchar" Nullable="false" MaxLength="50" />
-    <Property Name="SiteLink" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="SiteLink" Type="nvarchar" Nullable="false" MaxLength="200" />
     <Property Name="ListDiv" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="ImageDiv" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="PageDiv" Type="nvarchar" Nullable="true" MaxLength="50" />
@@ -23,5 +23,7 @@
     <Property Name="ListFilter" Type="nvarchar" Nullable="true" MaxLength="50" />
     <Property Name="ImageFilter" Type="nvarchar" Nullable="true" MaxLength="50" />
     <Property Name="PageFilter" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="DocType" Type="nvarchar" Nullable="true" MaxLength="10" />
+    <Property Name="SiteFilter" Type="nvarchar" Nullable="true" MaxLength="50" />
   </EntityType>
 </Schema>

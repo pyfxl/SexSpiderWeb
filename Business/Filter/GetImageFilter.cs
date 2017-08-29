@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Business.Filter
+namespace BusinessBLL.Filter
 {
     public class GetImageFilter : IFilter
     {
@@ -21,7 +21,15 @@ namespace Business.Filter
                 catch { }
             }
 
-            return dic.ContainsKey("file") ? dic["file"] : dic.ContainsKey("data-original") ? dic["data-original"] : dic["file"];
+            var attrs = new List<string> { "file", "data-original", "data-src", "src" };
+
+            foreach (var s in attrs)
+            {
+                if (dic.ContainsKey(s)) return dic[s];
+            }
+
+            return "";
         }
+        
     }
 }

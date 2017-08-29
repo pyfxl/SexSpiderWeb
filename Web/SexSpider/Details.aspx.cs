@@ -18,19 +18,29 @@ public partial class SexSpider_Details : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        var lists = new List<Business.Models.ListModel>();
+        var lists = new List<BusinessBLL.Models.ListModel>();
         
         string url = this.siteLinkHid.Value;
         string encoding = this.pageEncodeHid.Value;
+        string docType = "html";
         string listStart = this.listDivHid.Value;
         string listFilter = this.listFilterHid.Value;
         string domain = this.domainHid.Value;
 
+        var sexSpider = new Repository.SexSpider() {
+            SiteLink = url,
+            PageEncode = encoding,
+            DocType = docType,
+            ListDiv = listStart,
+            ListFilter = listFilter,
+            Domain = domain
+        };
+
         try
         {
-            lists = Business.SiteHelper.GetSiteList(url, encoding, listStart, listFilter, domain).ToList();
+            lists = BusinessBLL.SiteHelper.GetSiteList(sexSpider).ToList();
         }
-        catch(Exception ex)
+        catch
         {
         }
 
@@ -40,7 +50,7 @@ public partial class SexSpider_Details : System.Web.UI.Page
 
     protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
-        var lists = new List<Business.Models.ImageModel>();
+        var lists = new List<BusinessBLL.Models.ImageModel>();
 
         string url = e.CommandArgument.ToString();
         string encoding = this.pageEncodeHid.Value;
@@ -51,18 +61,30 @@ public partial class SexSpider_Details : System.Web.UI.Page
         string domain = this.domainHid.Value;
         string pageLevel = this.pageLevelHid.Value;
 
+        var sexSpider = new Repository.SexSpider()
+        {
+            SiteLink = url,
+            PageEncode = encoding,
+            ImageDiv = imageStart,
+            ImageFilter = imageFilter,
+            PageDiv = pageStart,
+            PageFilter = pageFilter,
+            Domain = domain,
+            PageLevel = Convert.ToByte(pageLevel)
+        };
+
         try
         {
-            if(pageLevel == "0")
+            if(sexSpider.PageLevel == 0)
             {
-                lists = Business.SiteHelper.GetListImage(url, encoding, imageStart, imageFilter, domain).ToList();
+                lists = BusinessBLL.SiteHelper.GetListImage(sexSpider, url).ToList();
             }
             else
             {
-                lists = Business.SiteHelper.GetListImagePage(url, encoding, imageStart, imageFilter, domain, pageStart, pageFilter, pageLevel).ToList();
+                lists = BusinessBLL.SiteHelper.GetListImagePage(sexSpider, url).ToList();
             }          
         }
-        catch (Exception ex)
+        catch
         {
         }
 

@@ -9,38 +9,41 @@ public partial class SexSpider_GetDetailJson4 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        string result = "";
+        if (!IsPostBack)
+        {
+            string result = "";
         
-        int siteId = Convert.ToInt32(Request["siteId"] ?? "0");
+            int siteId = Convert.ToInt32(Request["siteId"] ?? "0");
 
-        if (siteId > 0)
-        {
-            Business.SiteService service = new Business.SiteService();
+            if (siteId > 0)
+            {
+                BusinessBLL.SiteService service = new BusinessBLL.SiteService();
 
-            var sexSpider = service.GetSexSpider(siteId);
+                var sexSpider = service.GetSexSpider(siteId);
 
-            var lists = GetLists(sexSpider);
+                var lists = GetLists(sexSpider);
 
-            result = Newtonsoft.Json.JsonConvert.SerializeObject(lists);
+                result = Newtonsoft.Json.JsonConvert.SerializeObject(lists);
+            }
+            else
+            {
+                result = "SiteId 无效！";
+            }
+
+            Response.Write(result.ToString());
+            Response.End();
         }
-        else
-        {
-            result = "SiteId 无效！";
-        }
-
-        Response.Write(result.ToString());
-        Response.End();
     }
 
-    private List<Business.Models.ListModel> GetLists(Repository.SexSpider sexSpider)
+    private List<BusinessBLL.Models.ListModel> GetLists(Repository.SexSpider sexSpider)
     {
-        var lists = new List<Business.Models.ListModel>();
+        var lists = new List<BusinessBLL.Models.ListModel>();
 
         try
         {
-            lists = Business.SiteHelper.GetSiteList(sexSpider.SiteLink, sexSpider.PageEncode, sexSpider.ListDiv, sexSpider.ListFilter, sexSpider.Domain).ToList();
+            lists = BusinessBLL.SiteHelper.GetSiteList(sexSpider).ToList();
         }
-        catch (Exception ex)
+        catch
         {
         }
 

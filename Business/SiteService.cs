@@ -1,4 +1,5 @@
-﻿using Business.ViewModel;
+﻿using BusinessBLL.ViewModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,13 +7,13 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 
-namespace Business
+namespace BusinessBLL
 {
     public class SiteService
     {
         public SiteService()
         {
-            AutoMapper.Mapper.Initialize(m => m.CreateMap<Repository.SexSpider, Business.ViewModel.SiteListViewModel>()
+            AutoMapper.Mapper.Initialize(m => m.CreateMap<Repository.SexSpider, BusinessBLL.ViewModel.SiteListViewModel>()
                 .ForMember(vm => vm.siteid, dto => dto.MapFrom(mo => mo.SiteId))
                 .ForMember(vm => vm.siterank, dto => dto.MapFrom(mo => mo.SiteRank))
                 .ForMember(vm => vm.viplevel, dto => dto.MapFrom(mo => mo.VipLevel))
@@ -28,39 +29,95 @@ namespace Business
                 .ForMember(vm => vm.pagelevel, dto => dto.MapFrom(mo => mo.PageLevel))
                 .ForMember(vm => vm.listfilter, dto => dto.MapFrom(mo => mo.ListFilter))
                 .ForMember(vm => vm.imagefilter, dto => dto.MapFrom(mo => mo.ImageFilter))
-                .ForMember(vm => vm.pagefilter, dto => dto.MapFrom(mo => mo.PageFilter)).ReverseMap());
+                .ForMember(vm => vm.pagefilter, dto => dto.MapFrom(mo => mo.PageFilter))
+                .ForMember(vm => vm.doctype, dto => dto.MapFrom(mo => mo.DocType))
+                .ForMember(vm => vm.sitefilter, dto => dto.MapFrom(mo => mo.SiteFilter)).ReverseMap());
         }
 
         public string GetSiteList()
         {
             string html = "";
 
-            using (var db = new Repository.AALifeDbContext())
+            try
             {
-                var Businesss = db.SexSpider.OrderBy(s => s.SiteRank).ToList();
+                using (var db = new Repository.AALifeDbContext())
+                {
+                    var sexSpiders = db.SexSpider.OrderBy(s => s.SiteRank).ToList();
 
-                var siteLists = AutoMapper.Mapper.Map<List<Repository.SexSpider>, List<SiteListViewModel>>(Businesss);
+                    var models = AutoMapper.Mapper.Map<List<Repository.SexSpider>, List<SiteListViewModel>>(sexSpiders);
 
-                html = Newtonsoft.Json.JsonConvert.SerializeObject(siteLists);
+                    html = Newtonsoft.Json.JsonConvert.SerializeObject(models, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Include });
+                }
+            }
+            catch
+            {
             }
 
             return html;
         }
 
+        public void AddSiteList(string jsonHtml)
+        {
+            try
+            {
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
+
+                var models = AutoMapper.Mapper.Map<List<SiteListViewModel>, List<Repository.SexSpider>>(jsonObject);
+
+                using (var db = new Repository.AALifeDbContext())
+                {
+                    db.SexSpider.AddRange(models);
+                    db.SaveChanges();
+                }
+            }
+            catch
+            {
+            }
+        }
+
         public void UpdateSiteList(string jsonHtml)
         {
-            var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
-
-            var Business = AutoMapper.Mapper.Map<List<SiteListViewModel>, List<Repository.SexSpider>>(jsonObject);
-
-            using (var db = new Repository.AALifeDbContext())
+            try
             {
-                Business.ForEach(s => {
-                    db.SexSpider.Attach(s);
-                    DbEntityEntry<Repository.SexSpider> entry = db.Entry(s);
-                    entry.State = EntityState.Modified;
-                    db.SaveChanges();
-                });
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
+
+                var models = AutoMapper.Mapper.Map<List<SiteListViewModel>, List<Repository.SexSpider>>(jsonObject);
+
+                using (var db = new Repository.AALifeDbContext())
+                {
+                    models.ForEach(s =>
+                    {
+                        db.SexSpider.Attach(s);
+                        DbEntityEntry<Repository.SexSpider> entry = db.Entry(s);
+                        entry.State = EntityState.Modified;
+                        db.SaveChanges();
+                    });
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        public void RemoveSiteList(string jsonHtml)
+        {
+            try
+            {
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
+
+                var models = AutoMapper.Mapper.Map<List<SiteListViewModel>, List<Repository.SexSpider>>(jsonObject);
+
+                using (var db = new Repository.AALifeDbContext())
+                {
+                    models.ForEach(s =>
+                    {
+                        db.SexSpider.Remove(db.SexSpider.Where(a => a.SiteId == s.SiteId).FirstOrDefault());
+                        db.SaveChanges();
+                    });
+                }
+            }
+            catch
+            {
             }
         }
 
@@ -78,15 +135,9 @@ namespace Business
         /// <returns></returns>
         public string GetExtDic()
         {
-            string word = "";
-
-            string dic = "内射,內射,车震,大屁股,人妻,美臀,肥臀,翘臀,换妻,后入,後入,豐滿,水多,炮友,網友,白漿,闺蜜,陰道,少婦,熟婦,賓館,鮑魚,極品,鄰居";
-
-            string[] dics = dic.Split(',');
-
-            word = Newtonsoft.Json.JsonConvert.SerializeObject(dics);
-
-            return word;
+            string[] dics = "内射,內射,车震,大屁股,人妻,美臀,肥臀,翘臀,换妻,后入,後入,豐滿,水多,炮友,網友,白漿,闺蜜,陰道,少婦,熟婦,賓館,鮑魚,極品,鄰居".Split(',');
+            
+            return Newtonsoft.Json.JsonConvert.SerializeObject(dics);
         }
 
         /// <summary>
@@ -95,15 +146,9 @@ namespace Business
         /// <returns></returns>
         public string GetStopDic()
         {
-            string word = "";
-
-            string dic = "的,了,在,是,我,有,和,就,不,人,都,一,一个,上,也,很,到,说,要,去,你,会,着,没有,看,好,自己,这";
-
-            string[] dics = dic.Split(',');
-
-            word = Newtonsoft.Json.JsonConvert.SerializeObject(dics);
-
-            return word;
+            string[] dics = "的,了,在,是,我,有,和,就,不,人,都,一,一个,上,也,很,到,说,要,去,你,会,着,没有,看,好,自己,这".Split(',');
+            
+            return Newtonsoft.Json.JsonConvert.SerializeObject(dics); ;
         }
 
     }

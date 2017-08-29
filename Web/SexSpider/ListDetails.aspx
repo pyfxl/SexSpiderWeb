@@ -57,6 +57,7 @@
                         model: {
                             fields: {
                                 Title: { type: "string" },
+                                Domain: { type: "string" },
                                 Link: { type: "string" }
                             }
                         }
@@ -68,6 +69,11 @@
                         template: "<a href='javascript:;' onclick='f_open(\"#:Link#\")'>#:Title#</a>",
                         field: "Title",
                         title: "标题（单击查看图片）"
+                    },
+                    {
+                        template: "<a href='#:Domain#' target='_blank'>#:Domain#</a>",
+                        field: "Domain",
+                        title: "域名"
                     },
                     {
                         template: "<a href='#:Link#' target='_blank'>#:Link#</a>",

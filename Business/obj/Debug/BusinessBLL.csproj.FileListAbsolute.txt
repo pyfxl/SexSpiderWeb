@@ -1,0 +1,14 @@
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\CsQuery.dll
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\EntityFramework.dll
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\EntityFramework.SqlServer.dll
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\Repository.dll
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\Repository.pdb
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\CsQuery.xml
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\EntityFramework.xml
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\EntityFramework.SqlServer.xml
+D:\fxlweb\SexSpiderWeb\Business\obj\Debug\BusinessBLL.csprojResolveAssemblyReference.cache
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\BusinessBLL.dll.config
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\BusinessBLL.dll
+D:\fxlweb\SexSpiderWeb\Business\bin\Debug\BusinessBLL.pdb
+D:\fxlweb\SexSpiderWeb\Business\obj\Debug\BusinessBLL.dll
+D:\fxlweb\SexSpiderWeb\Business\obj\Debug\BusinessBLL.pdb

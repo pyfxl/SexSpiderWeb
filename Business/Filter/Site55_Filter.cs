@@ -1,17 +1,25 @@
-﻿using System;
+﻿using CsQuery;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml;
 
-namespace Business.Filter
+namespace BusinessBLL.Filter
 {
     public class Site55_Filter : IFilter
     {
         public string DoFilter(string str)
         {
-            str = str.Replace("-lp", "");
+            CQ _document = CQ.Create(str);
 
-            return str;
+            str = _document[0].Attributes["src"];
+
+            if (str == "") return "";
+
+            return str.Replace("-lp", "");
         }
+        
     }
 }

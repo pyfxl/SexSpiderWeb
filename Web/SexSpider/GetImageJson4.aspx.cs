@@ -6,11 +6,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class SexSpider_GetImageJson4 : System.Web.UI.Page
-{
-    
+{    
     protected void Page_Load(object sender, EventArgs e)
     {
-
         if (!IsPostBack)
         {
             string url = Request["url"] ?? "";
@@ -19,7 +17,7 @@ public partial class SexSpider_GetImageJson4 : System.Web.UI.Page
 
             if (siteId > 0 && url != "")
             {
-                Business.SiteService service = new Business.SiteService();
+                BusinessBLL.SiteService service = new BusinessBLL.SiteService();
 
                 var sexSpider = service.GetSexSpider(siteId);
 
@@ -31,22 +29,23 @@ public partial class SexSpider_GetImageJson4 : System.Web.UI.Page
         }
     }
 
-    private List<Business.Models.ImageModel> GetImages(Repository.SexSpider sexSpider, string url)
+    private List<BusinessBLL.Models.ImageModel> GetImages(Repository.SexSpider sexSpider, string url)
     {
-        var lists = new List<Business.Models.ImageModel>();
+        var lists = new List<BusinessBLL.Models.ImageModel>();
 
         try
         {
+            //PageLevel==0没有分页，==1有分页，==2只显示部分分页
             if (sexSpider.PageLevel == 0)
             {
-                lists = Business.SiteHelper.GetListImage(url, sexSpider.PageEncode, sexSpider.ImageDiv, sexSpider.ImageFilter, sexSpider.Domain).ToList();
+                lists = BusinessBLL.SiteHelper.GetListImage(sexSpider, url).ToList();
             }
             else
             {
-                lists = Business.SiteHelper.GetListImagePage(url, sexSpider.PageEncode, sexSpider.ImageDiv, sexSpider.ImageFilter, sexSpider.Domain, sexSpider.PageDiv, sexSpider.PageFilter, sexSpider.PageLevel).ToList();
+                lists = BusinessBLL.SiteHelper.GetListImagePage(sexSpider, url).ToList();
             }
         }
-        catch (Exception ex)
+        catch
         {
         }
 
