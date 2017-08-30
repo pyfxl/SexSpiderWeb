@@ -1,1 +1,6 @@
 /packages
+/Web/Bin
+/Repository/obj
+/Repository/bin
+/Business/obj
+/Business/bin
