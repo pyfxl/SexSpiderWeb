@@ -28,23 +28,6 @@ namespace BusinessBLL
 
             if (sex.DocType == "json")
             {
-                //string[] arrs = listStart.Split(',');
-                //string json = html;
-                //for(int i = 0; i < arrs.Length; i++)
-                //{
-                //    if (json.StartsWith("{"))
-                //    {
-                //        var jObject = Newtonsoft.Json.Linq.JObject.Parse(json);
-                //        var jToken = jObject[arrs[i]];
-                //        json = Newtonsoft.Json.JsonConvert.SerializeObject(jToken);
-                //    } else
-                //    {
-                //        var jArray = Newtonsoft.Json.Linq.JArray.Parse(json);
-                //        var jToken = jArray[0][arrs[i]];
-                //        json = Newtonsoft.Json.JsonConvert.SerializeObject(jToken);
-                //    }
-                //}
-
                 var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
                 var jToken = jObject[sex.ListDiv];
 
@@ -228,6 +211,8 @@ namespace BusinessBLL
         private static FilterChain LoadFilter(string str)
         {
             FilterChain chain = new FilterChain();
+
+            if (str == null || str == "") return chain;
 
             string[] cls = str.Split(',');
 
