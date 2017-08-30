@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace BusinessBLL
 {
@@ -112,19 +113,23 @@ namespace BusinessBLL
         {
             var images = new List<ImageModel>();
             var pages = new List<PageModel>();
-            
+
             var newPages = SiteHelper.GetImagePage(sex, url).ToList();
 
-            //pageLevel==2，用来取只显示部分页面的站点，比如妹子图[1][2][3]...[70]
-            if (sex.PageLevel == 2)
+            if (sex.PageLevel == 3)
             {
-                pages = GetPageMany(url, newPages);
+                string total = GetPageTotal(sex, url);
+                pages = GetPageMany(url, newPages, total);
+            }
+            else if (sex.PageLevel == 2)
+            {
+                pages = GetPageMany(url, newPages, "");
             }
             else
             {
                 pages = newPages;
             }
-            
+                        
             //添加原始页面
             pages.Insert(0, new PageModel { PageUrl = url });
             
@@ -137,6 +142,28 @@ namespace BusinessBLL
             return images;
         }
 
+        /// <summary>
+        /// 取图片总页数
+        /// </summary>
+        public static string GetPageTotal(Repository.SexSpider sex, string url)
+        {
+            string total = "";
+            string html = GetHtmlContent(url, sex.PageEncode, sex.Domain);
+
+            //过滤站点
+            html = FilterHtml(html, sex.SiteFilter);
+            
+            CQ _document = CQ.CreateDocument(html);
+            var content = _document[sex.PageFilter];
+            foreach (var item in content)
+            {
+                string str = HttpContext.Current.Server.HtmlDecode(item.InnerHTML);
+                total = Regex.Replace(str, "[^\\d]", "");
+            }
+
+            return total;
+        }
+        
         /// <summary>
         /// 取图片分页
         /// </summary>
@@ -267,7 +294,7 @@ namespace BusinessBLL
         /// <summary>
         /// 取多个页面，用来取只显示部分页面站点，比如妹子图[1][2][3]...[70]
         /// </summary>
-        private static List<PageModel> GetPageMany(string url, List<PageModel> newPages)
+        private static List<PageModel> GetPageMany(string url, List<PageModel> newPages, string total)
         {
             var pages = new List<PageModel>();
 
@@ -294,7 +321,14 @@ namespace BusinessBLL
 
             int pageNum = 0;
 
-            Int32.TryParse(Regex.Replace(pageStr, @"[^\d]", ""), out pageNum);
+            if (total != "")
+            {
+                pageNum = Convert.ToInt32(total);
+            }
+            else
+            {
+                Int32.TryParse(Regex.Replace(pageStr, @"[^\d]", ""), out pageNum);
+            }
 
             for (int i = 2; i <= pageNum; i++)
             {
@@ -307,7 +341,7 @@ namespace BusinessBLL
 
             return pages;
         }
-
+        
         /// <summary>
         /// 过滤站点html
         /// </summary>
