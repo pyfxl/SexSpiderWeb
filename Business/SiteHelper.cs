@@ -29,21 +29,19 @@ namespace BusinessBLL
 
             if (sex.DocType == "json")
             {
+                string[] root = sex.ListDiv.Split('.');
                 var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
-                var jToken = jObject[sex.ListDiv];
+                var jToken = jObject[root[0]];
 
                 foreach (var item in jToken)
                 {
-                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(item);
-                    string str = chain.DoFilter(json);
-                    string[] arrs = str.Split(',');
-                    arrs[2] = sex.Domain;
+                    string[] child = root[1].Split('&');
 
                     yield return new ListModel
                     {
-                        Title = System.Net.WebUtility.HtmlDecode(arrs[0]),
-                        Link = sex.Domain + arrs[1],
-                        Domain = arrs[2]
+                        Title = System.Net.WebUtility.HtmlDecode(item.Value<string>(child[0])),
+                        Link = GetLink(item.Value<string>(child[1]), sex.Domain),
+                        Domain = sex.Domain
                     };
                 }
             }
