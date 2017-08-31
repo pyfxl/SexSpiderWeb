@@ -73,7 +73,7 @@
                         model: {
                             id: "siteid",
                             fields: {
-                                siteid: { type: "number", editable: false, nullable: true },
+                                siteid: { type: "number", editable: false },
                                 siterank: { type: "string" },
                                 viplevel: { type: "number" },
                                 ishided: { type: "number" },
@@ -102,7 +102,7 @@
                     }
                 },
                 navigatable: true,
-                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新" }],
+                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", imageClass: "k-icon k-i-refresh" }],
                 //toolbar: kendo.template($("#template").html()),
                 columns: [
                     {
@@ -199,7 +199,7 @@
                         width: 150
                     }
                 ],
-                editable: true
+                editable: true,
             });
         });
 

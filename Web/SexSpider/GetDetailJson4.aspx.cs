@@ -43,7 +43,7 @@ public partial class SexSpider_GetDetailJson4 : System.Web.UI.Page
         {
             lists = BusinessBLL.SiteHelper.GetSiteList(sexSpider).ToList();
         }
-        catch
+        catch (Exception ex)
         {
         }
 

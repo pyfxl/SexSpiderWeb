@@ -220,6 +220,7 @@ namespace BusinessBLL
         public static string GetHtmlContent(string url, string encode, string domain)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.Proxy = new WebProxy("127.0.0.1", 11866);
             req.AutomaticDecompression = DecompressionMethods.GZip;
             req.Referer = domain;
             req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.13 Safari/537.36";
