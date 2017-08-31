@@ -1,2 +1,10 @@
 /packages
+<<<<<<< HEAD
+=======
+/Web/Bin
+/Repository/obj
+/Repository/bin
+/Business/obj
+/Business/bin
+>>>>>>> 08ccf39fc275f7a1efccc3b886f1b7c45bb3c6d8
 /.vs
