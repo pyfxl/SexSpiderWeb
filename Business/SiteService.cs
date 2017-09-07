@@ -46,7 +46,7 @@ namespace BusinessBLL
 
                     var models = AutoMapper.Mapper.Map<List<Repository.SexSpider>, List<SiteListViewModel>>(sexSpiders);
 
-                    html = Newtonsoft.Json.JsonConvert.SerializeObject(models, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Include });
+                    html = Newtonsoft.Json.JsonConvert.SerializeObject(models);
                 }
             }
             catch

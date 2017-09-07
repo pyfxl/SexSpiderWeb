@@ -29,7 +29,7 @@ namespace BusinessBLL
 
             if (sex.DocType == "json")
             {
-                string[] root = sex.ListDiv.Split('.');
+                string[] root = Regex.Split(sex.ListDiv, "\\|\\|");
                 var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
                 var jToken = jObject[root[0]];
 
