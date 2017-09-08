@@ -10,7 +10,7 @@ namespace BusinessBLL.Filter
     {
         public string DoFilter(string str)
         {
-            return Regex.Replace(str, "\\?.*?([^\"]+)", "");
+            return Regex.Replace(str, @"\?.*?([^""]+)", "");
         }
     }
 }
