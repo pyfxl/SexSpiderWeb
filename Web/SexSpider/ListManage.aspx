@@ -11,35 +11,26 @@
     <script src="../common/jquery-1.10.2.js"></script>
     <script src="../theme/kendoui/kendo.all.min.js"></script>
     <script src="../theme/kendoui/messages/kendo.messages.zh-CN.min.js"></script>
+    <script src="../theme/kendoui/messages/kendo.messages.zh-CN.js"></script>
     <title>列表页面</title>
-    <script>
-        function resizeContainers() {
-            var htmlHeight = window.innerHeight - 20;
-            //alert(htmlHeight);
-            //alert($('html').height());
-            $("#grid").height(htmlHeight);
-        }
-
-        $(document).ready(resizeContainers);
-        $(window).resize(resizeContainers);
-    </script>
 </head>
 <body>
     <div id="main">
-        <div id="grid"></div>        
-        <script type="text/x-kendo-template" id="template">
-            <div class="refreshBtnContainer">
-                <a href="\\#" class="k-pager-refresh k-link k-button" title="Refresh"><span class="k-icon k-i-reload"></span></a>
-            </div>
-            <div class="toolbar">
-                <label class="category-label" for="category">Show products by category:</label>
-                <input type="search" id="category" style="width: 150px"/>
-            </div>
-        </script>
+        <div id="grid"></div>
     </div>
     <script>
+        var gridElement = $("#grid");
+
+        function resizeContainers() {
+            gridElement.data("kendoGrid").resize();
+        }
+
+        //$(document).ready(resizeContainers);
+        $(window).resize(resizeContainers);
+    </script>
+    <script>
         $(document).ready(function () {
-            $("#grid").kendoGrid({
+            var grid = $("#grid").kendoGrid({
                 dataSource: {
                     transport: {
                         read: {
@@ -74,19 +65,19 @@
                             id: "siteid",
                             fields: {
                                 siteid: { type: "number", editable: false },
-                                siterank: { type: "string" },
-                                viplevel: { type: "number" },
-                                ishided: { type: "number" },
-                                sitename: { type: "string" },
-                                listpage: { type: "string" },
-                                pageencode: { type: "string" },
+                                siterank: { type: "string", validation: { required: true, validationMessage: "排序为必填项" } },
+                                viplevel: { type: "number", validation: { min: 0, max: 2 } },
+                                ishided: { type: "number", validation: { min: 0, max: 1 } },
+                                sitename: { type: "string", validation: { required: true, validationMessage: "名称为必填项" } },
+                                listpage: { type: "string", validation: { required: true, validationMessage: "下一页为必填项" } },
+                                pageencode: { type: "string", validation: { required: true, validationMessage: "编码为必填项" } },
                                 doctype: { type: "string" },
-                                domain: { type: "string" },
-                                sitelink: { type: "string" },
+                                domain: { type: "string", validation: { required: true, validationMessage: "域名为必填项" } },
+                                sitelink: { type: "string", validation: { required: true, validationMessage: "链接为必填项" } },
                                 listdiv: { type: "string" },
                                 imagediv: { type: "string" },
                                 pagediv: { type: "string" },
-                                pagelevel: { type: "number" },
+                                pagelevel: { type: "number", validation: { min: 0, max: 3 } },
                                 sitefilter: { type: "string" },
                                 listfilter: { type: "string" },
                                 imagefilter: { type: "string" },
@@ -101,30 +92,40 @@
                         }
                     }
                 },
+                height: 500,
                 navigatable: true,
-                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", imageClass: "k-icon k-i-refresh" }],
+                editable: true,
+                resizable: true,
+                filterable: true,
+                columnMenu: {
+                    columns: false
+                },
+                sortable: true,
+                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", imageClass: "k-icon k-i-refresh" }, { template: '<select id="required" multiple="multiple" data-placeholder="选择类别" style="width: 150px; float: right"><option>A</option><option>B</option></select>' }],
                 //toolbar: kendo.template($("#template").html()),
                 columns: [
                     {
                         template: "#:siteid# <a class=\"k-icon k-i-delete k-grid-delete\" href=\"javascript:;\"></a>",
                         field: "siteid",
                         title: "编号",
-                        width: 60
+                        width: 80
                     },
                     {
                         field: "siterank",
                         title: "排序",
-                        width: 60
+                        width: 80
                     },
                     {
                         field: "viplevel",
                         title: "VIP",
-                        width: 60
+                        width: 80,
+                        filterable: { multi: true }
                     },
                     {
                         field: "ishided",
                         title: "隐藏",
-                        width: 60
+                        width: 80,
+                        filterable: { multi: true }
                     },
                     {
                         template: "<a href='ListDetails.aspx?siteId=#:siteid#' target='_blank'>#:sitename#</a>",
@@ -140,12 +141,22 @@
                     {
                         field: "pageencode",
                         title: "编码",
-                        width: 80
+                        editor: function (container, options) {
+                            var input = $("<input />");
+                            input.attr("name", options.field);
+                            input.appendTo(container);
+                            input.kendoDropDownList({
+                                dataSource: ["utf-8", "gb2312"],
+                                animation: false
+                            });
+                        },
+                        width: 80,
+                        filterable: { multi: true }
                     },
                     {
                         field: "doctype",
                         title: "类型",
-                        width: 60
+                        width: 80
                     },
                     {
                         field: "domain",
@@ -176,7 +187,8 @@
                     {
                         field: "pagelevel",
                         title: "分页",
-                        width: 60
+                        width: 80,
+                        filterable: { multi: true }
                     },
                     {
                         field: "sitefilter",
@@ -198,10 +210,18 @@
                         title: "分页过滤",
                         width: 150
                     }
-                ],
-                editable: true,
-                resizable: true
+                ]
             });
+            var dropDown = grid.find("#required").kendoMultiSelect({
+                change: function () {
+                    var filter = { logic: "or", filters: [] };
+                    var values = this.value();
+                    $.each(values, function (i, v) {
+                        filter.filters.push({ field: "siterank", operator: "startswith", value: v });
+                    });
+                    grid.data("kendoGrid").dataSource.filter(filter);
+                }
+            }).data("kendoMultiSelect");
         });
 
         $("#grid").on("click", ".k-grid-refresh", function () {
@@ -244,6 +264,7 @@
                 obj.find("img").remove();
             }
         }
+
     </script>
     <style>
         

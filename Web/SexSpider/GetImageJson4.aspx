@@ -12,8 +12,8 @@
         <asp:Repeater ID="Repeater1" runat="server">
             <ItemTemplate>
                 <%--<p><img src="ImageHandler.ashx?url=<%# Eval("ImageUrl") %>&amp;domain=<%# Eval("ImageDomain") %>" title="" /></p>--%>
-                <%--<p><img src="<%# Eval("ImageUrl") %>" title="" /></p>--%>
-                <p><%# Eval("ImageUrl") %></p>
+                <p><img src="<%# Eval("ImageUrl") %>" title="" /></p>
+                <%--<p><%# Eval("ImageUrl") %></p>--%>
             </ItemTemplate>
         </asp:Repeater>
     </form>
