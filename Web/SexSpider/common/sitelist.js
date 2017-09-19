@@ -4,6 +4,7 @@ var cookie_name = "tags_cookie";
 
 function add_tags(id, name) {
     //alert(decodeURI(name));
+    if(id==null) return;
 
     var tags_arr = new Array();
     var tags_obj = JSON.parse('{"siteid":"' + id + '", "sitename":"' + decodeURI(name) + '"}');
@@ -41,21 +42,9 @@ function remove_tags(id) {
     $.cookie(cookie_name, JSON.stringify(tags_arr));
 }
 
-function set_active(id) {
-    $("#site_tags li").each(function () {
-        var li = $(this);
-        li.removeClass("active");
-        var val = li.attr("value");
-        if (val == id) {
-            li.addClass("active");
-        }
-    });
-    $("#site_his li").each(function () {
-        var li = $(this);
-        li.removeClass("active");
-        var val = li.attr("value");
-        if (val == id) {
-            li.addClass("active");
-        }
-    });
+//获取url中的参数
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
 }
