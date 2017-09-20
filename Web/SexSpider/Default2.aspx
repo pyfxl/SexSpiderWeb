@@ -55,7 +55,7 @@
                     }
                 },
                 change: onChange,
-                height: 450,
+                height: 490,
                 columns: [
                     {
                         template: "<a href='javascript:;' onclick='f_open(\"#:Link#\")'>#:Title#</a>",

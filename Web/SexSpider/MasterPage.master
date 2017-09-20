@@ -61,6 +61,54 @@
         #site_tags .ace-icon:hover:before {
             color: red;
         }
+        .sidebar+.main-content {
+            margin-left: 220px;
+        }
+        .sidebar {
+            width: 220px;
+        }
+        .no-skin .nav-list>li.active:after,
+        .nav-list>li>.submenu>li:before,
+        .nav-list>li>.submenu:before,
+        .nav-list>li .submenu>li>a,
+        .nav-list>li,
+        .nav-list>li>.submenu {
+            border: none;
+        }
+        .navbar {
+            background: #f39c12;
+            box-shadow: 0px 2px 1px 0px lightblue;
+        }
+        .no-skin .sidebar {
+            background: #f9fafc;
+        }
+        .no-skin .nav-list>li:hover>a,
+        .no-skin .nav-list>li.open>a,
+        .no-skin .nav-list>li>a:focus,
+        .no-skin .nav-list>li .submenu>li>a:hover {
+            color: #f39c12;
+            background: #f4f4f5;
+        }
+        .no-skin .nav-list>li .submenu>li>a,        
+        .no-skin .nav-list .open>a, .no-skin .nav-list .open>a:focus, .no-skin .nav-list .open>a:hover {
+            background: #f4f4f5;
+        }
+        .no-skin .nav-list>li>a,
+        .nav-list>li:before,
+        .no-skin .sidebar-shortcuts,
+        .ace-nav>li>a {
+            background: none;
+        }
+        .ace-nav>li>a,
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .ace-nav>li.open>a, .ace-nav>li>a:focus, .ace-nav>li>a:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .ace-nav>li {
+            border-left: 1px solid #f39c12;
+        }
     </style>
     <asp:ContentPlaceHolder id="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -121,7 +169,7 @@
                 </a>
             </div>
 
-            <button type="button" class="navbar-toggle menu-toggler pull-left sidebar-collapse" id="menu-toggler" data-target="#sidebar">
+            <button type="button" class="navbar-toggle menu-toggler pull-left sidebar-collapse" id="menu-toggler" data-target="#sidebar" style="display: none;">
                 <span class="sr-only">Toggle sidebar</span>
 
                 <span class="icon-bar"></span>
@@ -133,24 +181,25 @@
 
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                 <ul class="nav ace-nav">
+                    
+                    <li class="dropdown-modal">
+                        <a class="dropdown-toggle" href="Default.aspx">
+                            <i class="ace-icon glyphicon glyphicon-home"></i>
+                        </a>
+                    </li>
 
-                    <li class="light-blue dropdown-modal">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <li class="dropdown-modal">
+                        <a class="dropdown-toggle" href="#">
                             <i class="ace-icon glyphicon glyphicon-th"></i>
                         </a>
                     </li>
 
-                    <li class="light-blue dropdown-modal">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <li class="dropdown-modal">
+                        <a class="dropdown-toggle" href="#">
                             <i class="ace-icon glyphicon glyphicon-qrcode"></i>
                         </a>
                     </li>
 
-                    <li class="light-blue dropdown-modal">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="ace-icon glyphicon glyphicon-print"></i>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div><!-- /.navbar-container -->
@@ -168,7 +217,7 @@
 
             <div class="sidebar-shortcuts" id="sidebar-shortcuts">
                 <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                        
+                    <span style="float: left; margin-left: 15px;">菜单</span>
                 </div>
 
                 <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
@@ -190,10 +239,31 @@
                     <b class="arrow"></b>
 
                     <ul class="submenu" id="site_his">
+                        <li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i>
+
+                                Layouts 1
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                 
+                                Layouts 2
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i>
+
+                                Layouts 3
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
-                <li class="active open">
+                <li class="">
                     <a href="#" class="dropdown-toggle">
                         <i class="menu-icon fa fa-desktop"></i>
                         <span class="menu-text">
@@ -215,14 +285,14 @@
 
         <div class="main-content">
             <div class="main-content-inner">
-                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <%--<div class="breadcrumbs ace-save-state" id="breadcrumbs">
                     <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="site_tags">
                         <li class="active">
                             <a data-toggle="tab" href="Default.aspx">首页</a>                                
                         </li>
                     </ul>
 
-                </div>
+                </div>--%>
 
                 <div class="page-content">                    
                     <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">        

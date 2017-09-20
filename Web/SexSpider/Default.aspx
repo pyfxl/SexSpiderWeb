@@ -94,7 +94,7 @@
                         }
                     }
                 },
-                height: 450,
+                height: 490,
                 navigatable: true,
                 editable: true,
                 resizable: true,
