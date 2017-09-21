@@ -23,9 +23,16 @@
      
     <script>
 
-        var siteId = getUrlParam("siteId");
+        //var siteId = getUrlParam("siteId");
+        set_header();
 
-        //initGrid();
+        function set_header() {
+            var siteName = getUrlParam("siteName");
+            if ($.isEmptyObject(siteName)) {
+            } else {
+                $(".page-header h1").text(decodeURI(siteName));
+            }
+        }
 
         function onChange(arg) {
             var selected = $.map(this.select(), function (item) {
@@ -35,7 +42,7 @@
             alert("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
         }
 
-        function initGrid() {
+        function initGrid(siteId) {
             $("#grid").kendoGrid({
                 dataSource: {
                     transport: {
@@ -58,7 +65,7 @@
                 height: 490,
                 columns: [
                     {
-                        template: "<a href='javascript:;' onclick='f_open(\"#:Link#\")'>#:Title#</a>",
+                        template: "<a href='javascript:;' onclick='f_open(" + siteId + ",\"#:Link#\")'>#:Title#</a>",
                         field: "Title",
                         title: "标题（单击查看图片）"
                     },
@@ -76,10 +83,7 @@
             });
         }
 
-        function f_open(url) {
-            //debugger;
-            //alert(url);
-
+        function f_open(siteId, url) {
             //清除内容
             $("#window").html("");
 
@@ -98,6 +102,11 @@
         }
 
         function set_active() {
+            var siteId = getUrlParam("siteId");
+            if ($.isEmptyObject(siteId)) return;
+
+            $("#site_menu").parent().addClass("open");
+
             $("#site_menu li").each(function () {
                 var li = $(this);
                 li.removeClass("active");
@@ -110,14 +119,16 @@
     </script>
     
     <script>
-        $.pjax.defaults.cache = false;
+        //$.pjax.defaults.cache = false;
 
         $(document).pjax('a[data-pjax]', '#main', { fragment: '#main', timeout: 8000 });
         //$(document).pjax('[data-pjax] a, a[data-pjax]', '#pjax-container');
 
         $(document).on('ready pjax:end', function (event) {
-            siteId = getUrlParam("siteId");
-            initGrid();
+            var siteId = getUrlParam("siteId");
+            initGrid(siteId);
+            set_active();
+            set_header();
         })
 
     </script>

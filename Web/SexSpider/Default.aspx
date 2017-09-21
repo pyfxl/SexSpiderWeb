@@ -6,7 +6,7 @@
     
     <div class="page-header">
         <h1>
-            站点列表
+            首页
         </h1>
     </div><!-- /.page-header -->
 
@@ -31,6 +31,7 @@
         //$(window).resize(resizeContainers);
     </script>
     <script>
+
         $(document).ready(function () {
             var grid = $("#grid").kendoGrid({
                 dataSource: {
@@ -130,7 +131,7 @@
                         filterable: { multi: true }
                     },
                     {
-                        template: "<a href='Default2.aspx?siteId=#:siteid#' target='_blank'>#:sitename#</a>",
+                        template: "<a href='Default2.aspx?siteId=#:siteid#'>#:sitename#</a>",
                         field: "sitename",
                         title: "名称（单击查看列表）",
                         width: 200
@@ -214,6 +215,7 @@
                     }
                 ]
             });
+
             var dropDown = grid.find("#required").kendoMultiSelect({
                 change: function () {
                     var filter = { logic: "or", filters: [] };
@@ -261,10 +263,14 @@
 
         function f_loading(obj, show) {
             if (show) {
-                obj.append("<img src='../theme/kendoui/Default/loading.gif' style='padding-left: 5px;' />");
+                obj.append("<img src='theme/kendoui/Default/loading.gif' style='padding-left: 5px;' />");
             } else {
                 obj.find("img").remove();
             }
+        }
+
+        function set_active() {
+            $(".nav-list li").eq(0).addClass("active");
         }
 
     </script>
