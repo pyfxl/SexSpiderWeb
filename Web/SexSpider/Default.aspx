@@ -10,6 +10,24 @@
         </h1>
     </div><!-- /.page-header -->
 
+    <div class="row tableTools-container">
+        <div class="col-xs-12">
+            <form class="form-inline">
+                <label>站点列表</label>
+                <div class="form-group">
+                    <select class="input-xlarge" id="sitelists" multiple="multiple" size="1" data-placeholder="请选择..."></select>
+                </div>
+                <label>日期</label>
+                <div class="form-group">
+                    <input id="start" value="" style="width: 130px;" />
+                    -
+                    <input id="end" value="" style="width: 130px;" />
+                </div>
+                <button class="k-button" id="get">查询</button>
+            </form>
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->                                           
@@ -19,20 +37,11 @@
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
-     
-    <script>
-        //var gridElement = $("#grid");
 
-        //function resizeContainers() {
-            //gridElement.data("kendoGrid").resize();
-        //}
-
-        //$(document).ready(resizeContainers);
-        //$(window).resize(resizeContainers);
-    </script>
     <script>
 
         $(document).ready(function () {
+            
             var grid = $("#grid").kendoGrid({
                 dataSource: {
                     transport: {
@@ -95,7 +104,7 @@
                         }
                     }
                 },
-                height: 490,
+                height: 450,
                 navigatable: true,
                 editable: true,
                 resizable: true,
@@ -104,7 +113,7 @@
                     columns: false
                 },
                 sortable: true,
-                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", imageClass: "k-icon k-i-refresh" }, { template: '<select id="required" multiple="multiple" data-placeholder="选择类别" style="width: 150px; float: right"><option>A</option><option>B</option></select>' }],
+                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", iconClass: "k-icon k-i-refresh" }, { template: '<select id="required" multiple="multiple" data-placeholder="选择类别" style="width: 150px; float: right"><option>A</option><option>B</option></select>' }],
                 //toolbar: kendo.template($("#template").html()),
                 columns: [
                     {
@@ -131,7 +140,7 @@
                         filterable: { multi: true }
                     },
                     {
-                        template: "<a href='Default2.aspx?siteId=#:siteid#'>#:sitename#</a>",
+                        //template: "<a href='Default2.aspx?siteId=#:siteid#'>#:sitename#</a>",
                         field: "sitename",
                         title: "名称（单击查看列表）",
                         width: 200
@@ -215,7 +224,7 @@
                     }
                 ]
             });
-
+            
             var dropDown = grid.find("#required").kendoMultiSelect({
                 change: function () {
                     var filter = { logic: "or", filters: [] };
@@ -226,6 +235,70 @@
                     grid.data("kendoGrid").dataSource.filter(filter);
                 }
             }).data("kendoMultiSelect");
+
+            $("#sitelists").kendoMultiSelect({
+                dataTextField: "sitename",
+                dataValueField: "siteid",
+                autoClose: false,
+                tagMode: "single",
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "GetListJson4.aspx",
+                            dataType: "json",
+                        }
+                    }
+                }
+            });
+
+            function startChange() {
+                var startDate = start.value(),
+                endDate = end.value();
+
+                if (startDate) {
+                    startDate = new Date(startDate);
+                    startDate.setDate(startDate.getDate());
+                    end.min(startDate);
+                } else if (endDate) {
+                    start.max(new Date(endDate));
+                } else {
+                    endDate = new Date();
+                    start.max(endDate);
+                    end.min(endDate);
+                }
+            }
+
+            function endChange() {
+                var endDate = end.value(),
+                startDate = start.value();
+
+                if (endDate) {
+                    endDate = new Date(endDate);
+                    endDate.setDate(endDate.getDate());
+                    start.max(endDate);
+                } else if (startDate) {
+                    end.min(new Date(startDate));
+                } else {
+                    endDate = new Date();
+                    start.max(endDate);
+                    end.min(endDate);
+                }
+            }
+
+            var start = $("#start").kendoDatePicker({
+                change: startChange,
+                value: moment().format("YYYY-MM-DD"),
+                format: "yyyy/MM/dd"
+            }).data("kendoDatePicker");
+
+            var end = $("#end").kendoDatePicker({
+                change: endChange,
+                value: moment().add(1, "months").format("YYYY-MM-DD"),
+                format: "yyyy/MM/dd"
+            }).data("kendoDatePicker");
+
+            //start.max(end.value());
+            //end.min(start.value());
         });
 
         $("#grid").on("click", ".k-grid-refresh", function () {

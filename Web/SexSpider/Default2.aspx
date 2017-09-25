@@ -124,12 +124,15 @@
         $(document).pjax('a[data-pjax]', '#main', { fragment: '#main', timeout: 8000 });
         //$(document).pjax('[data-pjax] a, a[data-pjax]', '#pjax-container');
 
+        $(document).on('ready pjax:start', function () { NProgress.start(); });
+
         $(document).on('ready pjax:end', function (event) {
+            NProgress.done();
             var siteId = getUrlParam("siteId");
             initGrid(siteId);
             set_active();
             set_header();
-        })
+        });
 
     </script>
 </asp:Content>
