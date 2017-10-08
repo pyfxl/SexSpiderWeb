@@ -44,13 +44,9 @@ website.publishproj
     </AssemblyAttributes>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Business\BusinessBLL.csproj">
+    <ProjectReference Include="..\BusinessBLL\BusinessBLL.csproj">
       <Project>{F66B56D7-9CA0-480A-A967-BAD6E38303F9}</Project>
-      <Name>Business</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Repository\Repository.csproj">
-      <Project>{95016B48-10BC-4C62-A398-F3C10455DC9A}</Project>
-      <Name>Repository</Name>
+      <Name>BusinessBLL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(_WebPublishTargetsPath)\Web\Microsoft.WebSite.Publishing.targets" />

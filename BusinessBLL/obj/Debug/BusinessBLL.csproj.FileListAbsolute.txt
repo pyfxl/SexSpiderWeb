@@ -1,0 +1,16 @@
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\BusinessBLL.dll.config
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\BusinessBLL.dll
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\BusinessBLL.pdb
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\CsQuery.dll
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\EntityFramework.dll
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\EntityFramework.SqlServer.dll
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\CsQuery.xml
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\EntityFramework.xml
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\EntityFramework.SqlServer.xml
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\zh-Hans\EntityFramework.resources.dll
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\fxlweb\SexSpiderWeb\BusinessBLL\obj\Debug\BusinessBLL.dll
+D:\fxlweb\SexSpiderWeb\BusinessBLL\obj\Debug\BusinessBLL.pdb
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\AutoMapper.xml
+D:\fxlweb\SexSpiderWeb\BusinessBLL\obj\Debug\BusinessBLL.csprojResolveAssemblyReference.cache
+D:\fxlweb\SexSpiderWeb\BusinessBLL\bin\Debug\NLog.xml

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SexSpiderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="SexSpider">
+    <Key>
+      <PropertyRef Name="SiteId" />
+    </Key>
+    <Property Name="SiteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SiteRank" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="VipLevel" Type="Byte" Nullable="false" />
+    <Property Name="IsHided" Type="Byte" Nullable="false" />
+    <Property Name="SiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ListPage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PageEncode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Domain" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SiteLink" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ListDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ImageDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PageDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PageLevel" Type="Byte" Nullable="false" />
+    <Property Name="ListFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImageFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PageFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DocType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="SiteFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="SexSpiderDbContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="SexSpider" EntityType="Self.SexSpider" />
+  </EntityContainer>
+</Schema>

@@ -27,7 +27,7 @@ public partial class SexSpider_Details : System.Web.UI.Page
         string listFilter = this.listFilterHid.Value;
         string domain = this.domainHid.Value;
 
-        var sexSpider = new Repository.SexSpider() {
+        var sexSpider = new BusinessBLL.Models.SexSpider() {
             SiteLink = url,
             PageEncode = encoding,
             DocType = docType,
@@ -61,7 +61,7 @@ public partial class SexSpider_Details : System.Web.UI.Page
         string domain = this.domainHid.Value;
         string pageLevel = this.pageLevelHid.Value;
 
-        var sexSpider = new Repository.SexSpider()
+        var sexSpider = new BusinessBLL.Models.SexSpider()
         {
             SiteLink = url,
             PageEncode = encoding,

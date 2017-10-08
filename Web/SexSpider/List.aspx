@@ -8,7 +8,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title></title>
     <link href="../theme/kendoui/kendo.common.min.css" rel="stylesheet" />
-    <link href="../theme/kendoui/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="../theme/kendoui/kendo.default.min.css" rel="stylesheet" />
     <script src="../common/jquery-1.10.2.js"></script>
     <script src="../theme/kendoui/kendo.all.min.js"></script>
     <script>
@@ -24,6 +24,7 @@
                         "<td>" + value.siteid + "</td>" +
                         "<td>" + value.sitename + "</td>" +
                         "<td><a href='Details.aspx?siteId=" + value.siteid + "' target='_blank'>列表</a></td>" +
+                        "<td><a href='" + value.domain + "' target='_blank'>" + value.domain + "</a></td>" +
                         "<td><a href='" + value.sitelink + "' target='_blank'>" + value.sitelink + "</a></td>" +
                         "<td>" + value.pageencode + "</td>" +
                         "<td>未加载</td>" +
@@ -34,15 +35,16 @@
             $("#Button1").click(function () {
                 $(".list_table tr:not(:first)").each(function (i, v) {
 
-                    var sitelink = $(v).find("td").eq(3).text();
-                    var pageencode = $(v).find("td").eq(4).text();
+                    var domain = $(v).find("td").eq(3).text();
+                    var sitelink = $(v).find("td").eq(4).text();
+                    var pageencode = $(v).find("td").eq(5).text();
 
                     setTimeout(function () {
                         $.ajax({
                             type: "POST",
                             //async: false,
                             url: "List.aspx/CheckSiteLink",
-                            data: JSON.stringify({ "siteLink": sitelink, "encoding": pageencode }),
+                            data: JSON.stringify({ "siteLink": sitelink, "encoding": pageencode, "domain": domain }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (data) {
@@ -78,6 +80,7 @@
                 <col style="width: 10%;" />
                 <col style="width: 20%;" />
                 <col style="width: 10%;" />
+                <col style="width: 20%;" />
                 <col />
                 <col style="width: 10%;" />
                 <col style="width: 10%;" />
@@ -86,18 +89,12 @@
                 <th>编号</th>
                 <th>名称</th>
                 <th>查看</th>
+                <th>域名</th>
                 <th>地址</th>
                 <th>编码</th>
                 <th>状态</th>
             </tr>
         </table>
     </form>
-    <script>
-        $(document).ready(function() {
-            $("#grid").kendoGrid({
-                height: 550
-            });
-        });
-    </script> 
 </body>
 </html>
