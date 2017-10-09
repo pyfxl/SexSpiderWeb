@@ -90,6 +90,8 @@ h1,h2,h3,h4,h5,h6 {
     .k-multiselect {
         width: 70px !important;
     }
+}
+@media (max-width:768px) {
     .page-content {
         padding: 8px !important;
     }

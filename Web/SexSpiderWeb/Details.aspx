@@ -89,10 +89,12 @@
 
         function f_open(siteId, url) {
             var _width = "75%";
+			var _height = "75%";
 
             //是否手机
             if ('ontouchstart' in document.documentElement) {
                 _width = "95%";
+				//_height = "80%";
             }
 
             //清除内容
@@ -103,7 +105,7 @@
   
             var dialog = $("#window").kendoWindow({
                 width: _width,
-                height: _width,
+                height: _height,
                 title: "图片查看",
                 actions: ["Refresh", "Maximize", "Close"],
                 content: "GetImageJson4.aspx?siteId=" + _siteId + "&url=" + _url
