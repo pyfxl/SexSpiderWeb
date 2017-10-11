@@ -86,11 +86,20 @@ h1,h2,h3,h4,h5,h6 {
 .page-content {
     padding: 15px;
 }
-@media (min-width:360px) and (max-width:375px) {
+.page-header {
+    padding-bottom: 9px;
+    padding-top: 0px;
+}
+@media (max-width:420px) {
     .k-multiselect {
         width: 70px !important;
     }
+}
+@media (max-width:768px) {
     .page-content {
         padding: 8px !important;
+    }
+    .page-header {
+        padding-top: 7px;
     }
 }

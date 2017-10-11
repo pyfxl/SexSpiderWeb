@@ -8,3 +8,6 @@
 /Business/bin
 >>>>>>> 08ccf39fc275f7a1efccc3b886f1b7c45bb3c6d8
 /.vs
+/BusinessBLL/bin
+/BusinessBLL/obj
+/Web/Log

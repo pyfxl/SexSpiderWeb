@@ -3,6 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    
+    <div id="window"></div>
 
     <div class="page-header">
         <h1>
@@ -18,7 +20,6 @@
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->                                           
             <div id="main">
-                <div id="window"></div>
                 <div id="grid"></div>
             </div>
             <!-- PAGE CONTENT ENDS -->
@@ -89,6 +90,7 @@
 
         function f_open(siteId, url) {
             var _width = "75%";
+            var _height = "75%";
 
             //是否手机
             if ('ontouchstart' in document.documentElement) {
@@ -103,7 +105,7 @@
   
             var dialog = $("#window").kendoWindow({
                 width: _width,
-                height: _width,
+                height: _height,
                 title: "图片查看",
                 actions: ["Refresh", "Maximize", "Close"],
                 content: "GetImageJson4.aspx?siteId=" + _siteId + "&url=" + _url
