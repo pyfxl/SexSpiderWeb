@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BusinessBLL.Models
+namespace BusinessBLL.ViewModel
 {
     public class ListModel
     {

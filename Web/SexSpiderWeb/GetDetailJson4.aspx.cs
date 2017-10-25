@@ -35,9 +35,9 @@ public partial class SexSpiderWeb_GetDetailJson4 : System.Web.UI.Page
         }
     }
 
-    private List<BusinessBLL.Models.ListModel> GetLists(BusinessBLL.Models.SexSpider sexSpider)
+    private List<BusinessBLL.ViewModel.ListModel> GetLists(BusinessBLL.Models.SexSpider sexSpider)
     {
-        var lists = new List<BusinessBLL.Models.ListModel>();
+        var lists = new List<BusinessBLL.ViewModel.ListModel>();
 
         try
         {

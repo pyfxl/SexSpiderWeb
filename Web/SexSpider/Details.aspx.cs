@@ -18,7 +18,7 @@ public partial class SexSpider_Details : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        var lists = new List<BusinessBLL.Models.ListModel>();
+        var lists = new List<BusinessBLL.ViewModel.ListModel>();
         
         string url = this.siteLinkHid.Value;
         string encoding = this.pageEncodeHid.Value;
@@ -50,7 +50,7 @@ public partial class SexSpider_Details : System.Web.UI.Page
 
     protected void Repeater1_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
-        var lists = new List<BusinessBLL.Models.ImageModel>();
+        var lists = new List<BusinessBLL.ViewModel.ImageModel>();
 
         string url = e.CommandArgument.ToString();
         string encoding = this.pageEncodeHid.Value;

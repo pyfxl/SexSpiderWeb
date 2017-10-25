@@ -1,5 +1,6 @@
 ﻿using BusinessBLL.Filter;
 using BusinessBLL.Models;
+using BusinessBLL.ViewModel;
 using CsQuery;
 using System;
 using System.Collections.Generic;

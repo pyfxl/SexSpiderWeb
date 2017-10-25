@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessBLL", "BusinessBLL\
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web", "Web\", "{15D38ED3-2297-4848-B00F-0C76E47E6263}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
 		ProjectReferences = "{f66b56d7-9ca0-480a-a967-bad6e38303f9}|BusinessBLL.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/SexSpiderDeploy"
 		Debug.AspNetCompiler.PhysicalPath = "Web\"

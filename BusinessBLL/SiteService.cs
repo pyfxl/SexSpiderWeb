@@ -1,4 +1,7 @@
-﻿using NLog;
+﻿using BusinessBLL.Models;
+using BusinessBLL.ViewModel;
+using Mapster;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -14,25 +17,26 @@ namespace BusinessBLL
 
         public SiteService()
         {
-            AutoMapper.Mapper.Initialize(m => m.CreateMap<Models.SexSpider, ViewModel.SiteListViewModel>()
-                .ForMember(vm => vm.siteid, dto => dto.MapFrom(mo => mo.SiteId))
-                .ForMember(vm => vm.siterank, dto => dto.MapFrom(mo => mo.SiteRank))
-                .ForMember(vm => vm.viplevel, dto => dto.MapFrom(mo => mo.VipLevel))
-                .ForMember(vm => vm.ishided, dto => dto.MapFrom(mo => mo.IsHided))
-                .ForMember(vm => vm.sitename, dto => dto.MapFrom(mo => mo.SiteName))
-                .ForMember(vm => vm.listpage, dto => dto.MapFrom(mo => mo.ListPage))
-                .ForMember(vm => vm.pageencode, dto => dto.MapFrom(mo => mo.PageEncode))
-                .ForMember(vm => vm.domain, dto => dto.MapFrom(mo => mo.Domain))
-                .ForMember(vm => vm.sitelink, dto => dto.MapFrom(mo => mo.SiteLink))
-                .ForMember(vm => vm.listdiv, dto => dto.MapFrom(mo => mo.ListDiv))
-                .ForMember(vm => vm.imagediv, dto => dto.MapFrom(mo => mo.ImageDiv))
-                .ForMember(vm => vm.pagediv, dto => dto.MapFrom(mo => mo.PageDiv))
-                .ForMember(vm => vm.pagelevel, dto => dto.MapFrom(mo => mo.PageLevel))
-                .ForMember(vm => vm.listfilter, dto => dto.MapFrom(mo => mo.ListFilter))
-                .ForMember(vm => vm.imagefilter, dto => dto.MapFrom(mo => mo.ImageFilter))
-                .ForMember(vm => vm.pagefilter, dto => dto.MapFrom(mo => mo.PageFilter))
-                .ForMember(vm => vm.doctype, dto => dto.MapFrom(mo => mo.DocType))
-                .ForMember(vm => vm.sitefilter, dto => dto.MapFrom(mo => mo.SiteFilter)).ReverseMap());
+            TypeAdapterConfig<Models.SexSpider, SiteListViewModel>.NewConfig()
+                .Map(dest => dest.siteid, src => src.SiteId)
+                .Map(dest => dest.siterank, src => src.SiteRank)
+                .Map(dest => dest.viplevel, src => src.VipLevel)
+                .Map(dest => dest.ishided, src => src.IsHided)
+                .Map(dest => dest.sitename, src => src.SiteName)
+                .Map(dest => dest.listpage, src => src.ListPage)
+                .Map(dest => dest.pageencode, src => src.PageEncode)
+                .Map(dest => dest.domain, src => src.Domain)
+                .Map(dest => dest.sitelink, src => src.SiteLink)
+                .Map(dest => dest.listdiv, src => src.ListDiv)
+                .Map(dest => dest.imagediv, src => src.ImageDiv)
+                .Map(dest => dest.pagediv, src => src.PageDiv)
+                .Map(dest => dest.pagelevel, src => src.PageLevel)
+                .Map(dest => dest.listfilter, src => src.ListFilter)
+                .Map(dest => dest.imagefilter, src => src.ImageFilter)
+                .Map(dest => dest.pagefilter, src => src.PageFilter)
+                .Map(dest => dest.doctype, src => src.DocType)
+                .Map(dest => dest.sitefilter, src => src.SiteFilter)
+                .Compile();
         }
 
         public string GetSiteList()
@@ -45,7 +49,7 @@ namespace BusinessBLL
                 {
                     var sexSpiders = db.SexSpider.OrderBy(s => s.SiteRank).ToList();
 
-                    var models = AutoMapper.Mapper.Map<List<Models.SexSpider>, List<ViewModel.SiteListViewModel>>(sexSpiders);
+                    var models = sexSpiders.Adapt<List<SiteListViewModel>>();
 
                     html = Newtonsoft.Json.JsonConvert.SerializeObject(models);
                 }
@@ -64,7 +68,7 @@ namespace BusinessBLL
             {
                 var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ViewModel.SiteListViewModel>>(jsonHtml);
 
-                var models = AutoMapper.Mapper.Map<List<ViewModel.SiteListViewModel>, List<Models.SexSpider>>(jsonObject);
+                var models = jsonObject.Adapt<List<SexSpider>>();
 
                 using (var db = new BusinessBLL.Models.SexSpiderDbContext())
                 {
@@ -83,7 +87,7 @@ namespace BusinessBLL
             {
                 var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ViewModel.SiteListViewModel>>(jsonHtml);
 
-                var models = AutoMapper.Mapper.Map<List<ViewModel.SiteListViewModel>, List<Models.SexSpider>>(jsonObject);
+                var models = jsonObject.Adapt<List<SexSpider>>();
 
                 using (var db = new Models.SexSpiderDbContext())
                 {
@@ -107,7 +111,7 @@ namespace BusinessBLL
             {
                 var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ViewModel.SiteListViewModel>>(jsonHtml);
 
-                var models = AutoMapper.Mapper.Map<List<ViewModel.SiteListViewModel>, List<Models.SexSpider>>(jsonObject);
+                var models = jsonObject.Adapt<List<SexSpider>>();
 
                 using (var db = new Models.SexSpiderDbContext())
                 {

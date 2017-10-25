@@ -29,9 +29,9 @@ public partial class SexSpiderWeb_GetImageJson4 : System.Web.UI.Page
         }
     }
 
-    private List<BusinessBLL.Models.ImageModel> GetImages(BusinessBLL.Models.SexSpider sexSpider, string url)
+    private List<BusinessBLL.ViewModel.ImageModel> GetImages(BusinessBLL.Models.SexSpider sexSpider, string url)
     {
-        var lists = new List<BusinessBLL.Models.ImageModel>();
+        var lists = new List<BusinessBLL.ViewModel.ImageModel>();
 
         try
         {
