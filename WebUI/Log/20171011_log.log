@@ -1,0 +1,66 @@
+2017-10-11 21:27:10.1195|ERROR|BusinessBLL.SiteService|Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SexSpider -> SiteListViewModel
+BusinessBLL.Models.SexSpider -> BusinessBLL.ViewModel.SiteListViewModel
+
+Destination path:
+List`1[0]
+
+Source value:
+BusinessBLL.Models.SexSpider
+2017-10-11 21:27:26.6644|ERROR|BusinessBLL.SiteService|Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SexSpider -> SiteListViewModel
+BusinessBLL.Models.SexSpider -> BusinessBLL.ViewModel.SiteListViewModel
+
+Destination path:
+List`1[0]
+
+Source value:
+BusinessBLL.Models.SexSpider
+2017-10-11 21:33:57.3261|ERROR|BusinessBLL.SiteService|Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SexSpider -> SiteListViewModel
+BusinessBLL.Models.SexSpider -> BusinessBLL.ViewModel.SiteListViewModel
+
+Destination path:
+List`1[0]
+
+Source value:
+BusinessBLL.Models.SexSpider
+2017-10-11 23:26:48.2965|ERROR|BusinessBLL.SiteService|Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SexSpider -> SiteListViewModel
+BusinessBLL.Models.SexSpider -> BusinessBLL.ViewModel.SiteListViewModel
+
+Destination path:
+List`1[0]
+
+Source value:
+BusinessBLL.Models.SexSpider
+2017-10-11 23:31:12.1157|ERROR|BusinessBLL.SiteService|Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SexSpider -> SiteListViewModel
+BusinessBLL.Models.SexSpider -> BusinessBLL.ViewModel.SiteListViewModel
+
+Destination path:
+List`1[0]
+
+Source value:
+BusinessBLL.Models.SexSpider
+2017-10-11 23:31:12.2397|ERROR|BusinessBLL.SiteService|Missing type map configuration or unsupported mapping.
+
+Mapping types:
+SexSpider -> SiteListViewModel
+BusinessBLL.Models.SexSpider -> BusinessBLL.ViewModel.SiteListViewModel
+
+Destination path:
+List`1[0]
+
+Source value:
+BusinessBLL.Models.SexSpider

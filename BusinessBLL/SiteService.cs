@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace BusinessBLL
@@ -17,26 +18,7 @@ namespace BusinessBLL
 
         public SiteService()
         {
-            TypeAdapterConfig<Models.SexSpider, SiteListViewModel>.NewConfig()
-                .Map(dest => dest.siteid, src => src.SiteId)
-                .Map(dest => dest.siterank, src => src.SiteRank)
-                .Map(dest => dest.viplevel, src => src.VipLevel)
-                .Map(dest => dest.ishided, src => src.IsHided)
-                .Map(dest => dest.sitename, src => src.SiteName)
-                .Map(dest => dest.listpage, src => src.ListPage)
-                .Map(dest => dest.pageencode, src => src.PageEncode)
-                .Map(dest => dest.domain, src => src.Domain)
-                .Map(dest => dest.sitelink, src => src.SiteLink)
-                .Map(dest => dest.listdiv, src => src.ListDiv)
-                .Map(dest => dest.imagediv, src => src.ImageDiv)
-                .Map(dest => dest.pagediv, src => src.PageDiv)
-                .Map(dest => dest.pagelevel, src => src.PageLevel)
-                .Map(dest => dest.listfilter, src => src.ListFilter)
-                .Map(dest => dest.imagefilter, src => src.ImageFilter)
-                .Map(dest => dest.pagefilter, src => src.PageFilter)
-                .Map(dest => dest.doctype, src => src.DocType)
-                .Map(dest => dest.sitefilter, src => src.SiteFilter)
-                .Compile();
+
         }
 
         public string GetSiteList()
@@ -45,11 +27,11 @@ namespace BusinessBLL
 
             try
             {
-                using (var db = new Models.SexSpiderDbContext())
+                using (var db = new SexSpiderDbContext())
                 {
                     var sexSpiders = db.SexSpider.OrderBy(s => s.SiteRank).ToList();
 
-                    var models = sexSpiders.Adapt<List<SiteListViewModel>>();
+                    var models = sexSpiders.Adapt<List<SexSpider>, List<SiteListViewModel>> ();
 
                     html = Newtonsoft.Json.JsonConvert.SerializeObject(models);
                 }
@@ -66,11 +48,11 @@ namespace BusinessBLL
         {
             try
             {
-                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ViewModel.SiteListViewModel>>(jsonHtml);
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
 
-                var models = jsonObject.Adapt<List<SexSpider>>();
+                var models = jsonObject.Adapt<List<SiteListViewModel>, List<SexSpider>>();
 
-                using (var db = new BusinessBLL.Models.SexSpiderDbContext())
+                using (var db = new SexSpiderDbContext())
                 {
                     db.SexSpider.AddRange(models);
                     db.SaveChanges();
@@ -85,16 +67,16 @@ namespace BusinessBLL
         {
             try
             {
-                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ViewModel.SiteListViewModel>>(jsonHtml);
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
 
-                var models = jsonObject.Adapt<List<SexSpider>>();
+                var models = jsonObject.Adapt<List<SiteListViewModel>, List<SexSpider>>();
 
-                using (var db = new Models.SexSpiderDbContext())
+                using (var db = new SexSpiderDbContext())
                 {
                     models.ForEach(s =>
                     {
                         db.SexSpider.Attach(s);
-                        DbEntityEntry<Models.SexSpider> entry = db.Entry(s);
+                        DbEntityEntry<SexSpider> entry = db.Entry(s);
                         entry.State = EntityState.Modified;
                         db.SaveChanges();
                     });
@@ -109,11 +91,11 @@ namespace BusinessBLL
         {
             try
             {
-                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ViewModel.SiteListViewModel>>(jsonHtml);
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
 
-                var models = jsonObject.Adapt<List<SexSpider>>();
+                var models = jsonObject.Adapt<List<SiteListViewModel>, List<SexSpider>>();
 
-                using (var db = new Models.SexSpiderDbContext())
+                using (var db = new SexSpiderDbContext())
                 {
                     models.ForEach(s =>
                     {
@@ -127,9 +109,9 @@ namespace BusinessBLL
             }
         }
 
-        public Models.SexSpider GetSexSpider(int siteId)
+        public SexSpider GetSexSpider(int siteId)
         {
-            using (var db = new Models.SexSpiderDbContext())
+            using (var db = new SexSpiderDbContext())
             {
                 return db.SexSpider.Where(s => s.SiteId == siteId).FirstOrDefault();
             }
