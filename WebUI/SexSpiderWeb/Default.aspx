@@ -122,7 +122,7 @@
                         filterable: { multi: true }
                     },
                     {
-                        template: "<a href='Details.aspx?siteId=#:siteid#&siteName=#:encodeURI(encodeURI(sitename))#'>#:sitename#</a>",
+                        template: "<a href='Details.aspx?siteId=#:siteid#&siteName=#:encodeURI(encodeURI(sitename))#' target='_blank'>#:sitename#</a>",
                         field: "sitename",
                         title: "名称（单击查看列表）",
                         width: 200
