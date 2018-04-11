@@ -2,6 +2,7 @@
 using BusinessBLL.Models;
 using BusinessBLL.ViewModel;
 using CsQuery;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,7 +34,7 @@ namespace BusinessBLL
                 string[] root = Regex.Split(sex.ListDiv, "\\|\\|");
                 var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
                 var jToken = jObject[root[0]];
-
+                
                 foreach (var item in jToken)
                 {
                     string[] child = root[1].Split('&');
@@ -219,7 +220,7 @@ namespace BusinessBLL
         public static string GetHtmlContent(string url, string encode, string domain)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            req.Proxy = new WebProxy("127.0.0.1", 8086);
+            //req.Proxy = new WebProxy("127.0.0.1", 8086);
             req.AutomaticDecompression = DecompressionMethods.GZip;
             req.Referer = domain;
             req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.13 Safari/537.36";
