@@ -52,7 +52,7 @@
                 dataSource: {
                     transport: {
                         read: {
-                            url: "GetDetailJson4.aspx?siteId=" + siteId,
+                            url: "GetDetailJson4.aspx?siteId=" + siteId + (getUrlParam("page") == null ? "" : "&page=" + getUrlParam("page")),
                             dataType: "json"
                         }
                     },
@@ -68,6 +68,7 @@
                 },
                 change: onChange,
                 height: 490,
+                //toolbar: "",
                 columns: [
                     {
                         template: "<a href='javascript:;' onclick='f_open(" + siteId + ",\"#:Link#\")'>#:Title#</a>",
@@ -127,6 +128,7 @@
                 }
             });
         };
+
     </script>
     
     <script>

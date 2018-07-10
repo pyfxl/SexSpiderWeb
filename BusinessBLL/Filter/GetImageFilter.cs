@@ -21,7 +21,7 @@ namespace BusinessBLL.Filter
                 catch { }
             }
 
-            var attrs = new List<string> { "file", "data-original", "data-src", "src" };
+            var attrs = new List<string> { "file", "data-original", "data-src", "zoomfile", "src" };
 
             foreach (var s in attrs)
             {

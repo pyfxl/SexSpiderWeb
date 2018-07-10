@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BusinessBLL.Filter
+{
+    public class GetMp4Filter : IFilter
+    {
+        public string DoFilter(string str)
+        {
+            var pos = str.IndexOf(".mp4");
+            var fStr = str.Substring(0, pos);
+            var eStr = str.Substring(pos);
+            var fResult = fStr.Substring(fStr.LastIndexOf("\"") + 1);
+            var eResult = eStr.Substring(0, eStr.IndexOf("\""));
+            return fResult.Replace("\\", "") + eResult;
+        }
+    }
+}

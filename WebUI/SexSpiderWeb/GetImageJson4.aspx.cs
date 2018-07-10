@@ -52,4 +52,12 @@ public partial class SexSpiderWeb_GetImageJson4 : System.Web.UI.Page
         return lists;
     }
 
+    public bool IsVideo(string url)
+    {
+        //string[] files = new string[] { ".m3u8", ".mp4" };
+        //return files.Contains(url);
+
+        return url.LastIndexOf(".mp4") > 0 || url.LastIndexOf(".m3u8") > 0;
+    }
+
 }

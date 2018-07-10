@@ -11,8 +11,8 @@
     <form id="form1" runat="server">
         <asp:Repeater ID="Repeater1" runat="server">
             <ItemTemplate>
-                <%--<p><img src="ImageHandler.ashx?url=<%# Eval("ImageUrl") %>&amp;domain=<%# Eval("ImageDomain") %>" title="" /></p>--%>
-                <p><img src="<%# Eval("ImageUrl") %>" title="" /></p>
+                <%# IsVideo(Eval("ImageUrl").ToString()) ? "<p><a href='Player.aspx?v="+HttpUtility.UrlEncode(Eval("ImageUrl").ToString())+"' target='_blank'>"+Eval("ImageUrl")+"</a></p>" : "<p><img src='"+Eval("ImageUrl")+"' title='' /></p>" %>
+                <%--<p><img src="<%# Eval("ImageUrl") %>" title="" /></p>--%>
                 <%--<p><%# Eval("ImageUrl") %></p>--%>
             </ItemTemplate>
         </asp:Repeater>

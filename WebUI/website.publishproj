@@ -18,7 +18,7 @@ website.publishproj
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{95a2a13a-285b-43e0-8419-7b6d8cc57a09}</ProjectGuid>
     <SourceWebPhysicalPath>$(MSBuildThisFileDirectory)</SourceWebPhysicalPath>
-    <SourceWebVirtualPath>/Web</SourceWebVirtualPath>
+    <SourceWebVirtualPath>/WebUI</SourceWebVirtualPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <SourceWebProject>
     </SourceWebProject>

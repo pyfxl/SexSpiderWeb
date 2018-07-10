@@ -78,9 +78,11 @@
     <Compile Include="Filter\FilterChain.cs" />
     <Compile Include="Filter\GetImageFilter.cs" />
     <Compile Include="Filter\GetJpgFilter.cs" />
+    <Compile Include="Filter\GetMp4Filter.cs" />
     <Compile Include="Filter\GetSpanFilter.cs" />
     <Compile Include="Filter\GetTextareaFilter.cs" />
     <Compile Include="Filter\GetTitleFilter.cs" />
+    <Compile Include="Filter\GetM3u8Filter.cs" />
     <Compile Include="Filter\IFilter.cs" />
     <Compile Include="Filter\NoEmFilter.cs" />
     <Compile Include="Filter\NoFontFilter.cs" />
