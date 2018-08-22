@@ -23,6 +23,8 @@ namespace BusinessBLL.Models
         public string PageEncode { get; set; }
         public string Domain { get; set; }
         public string SiteLink { get; set; }
+        public string MainDiv { get; set; }
+        public string ThumbDiv { get; set; }
         public string ListDiv { get; set; }
         public string ImageDiv { get; set; }
         public string PageDiv { get; set; }
@@ -32,5 +34,6 @@ namespace BusinessBLL.Models
         public string PageFilter { get; set; }
         public string DocType { get; set; }
         public string SiteFilter { get; set; }
+        public string SiteReplace { get; set; }
     }
 }

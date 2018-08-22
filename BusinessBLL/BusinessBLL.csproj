@@ -43,12 +43,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Mapster, Version=3.1.6.0, Culture=neutral, PublicKeyToken=2f39883af23c29a8, processorArchitecture=MSIL">
       <HintPath>..\packages\Mapster.3.1.6\lib\net45\Mapster.dll</HintPath>
@@ -62,9 +60,13 @@
       <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NReco.PhantomJS, Version=1.0.4.0, Culture=neutral, PublicKeyToken=f160d8c5e2ae66b6, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PhantomJS.1.0.4\lib\net40\NReco.PhantomJS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
@@ -78,6 +80,7 @@
     <Compile Include="Filter\FilterChain.cs" />
     <Compile Include="Filter\GetImageFilter.cs" />
     <Compile Include="Filter\GetJpgFilter.cs" />
+    <Compile Include="Filter\GetFlashFilter.cs" />
     <Compile Include="Filter\GetMp4Filter.cs" />
     <Compile Include="Filter\GetSpanFilter.cs" />
     <Compile Include="Filter\GetTextareaFilter.cs" />
@@ -85,15 +88,18 @@
     <Compile Include="Filter\GetM3u8Filter.cs" />
     <Compile Include="Filter\IFilter.cs" />
     <Compile Include="Filter\NoEmFilter.cs" />
+    <Compile Include="Filter\NoSpaceFilter.cs" />
     <Compile Include="Filter\NoFontFilter.cs" />
     <Compile Include="Filter\NoHtmlFilter.cs" />
     <Compile Include="Filter\NoImageFilter.cs" />
     <Compile Include="Filter\NoNumberFilter.cs" />
     <Compile Include="Filter\NoSpanFilter.cs" />
-    <Compile Include="Filter\Site58_Filter.cs" />
-    <Compile Include="Filter\Site55_Filter.cs" />
     <Compile Include="Filter\SplitTitleFilter.cs" />
-    <Compile Include="Filter\TestFilter.cs" />
+    <Compile Include="Models\SexSpider1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SexSpider.tt</DependentUpon>
+    </Compile>
     <Compile Include="SiteService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\ImageModel.cs" />
@@ -119,7 +125,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="Models\SexSpider.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SexSpider.Designer.cs</LastGenOutput>
@@ -134,6 +142,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe">
+      <Link>phantomjs.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Models\SexSpider.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SexSpider.edmx</DependentUpon>
@@ -143,6 +155,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SexSpider.edmx</DependentUpon>
       <LastGenOutput>SexSpider1.cs</LastGenOutput>
+    </Content>
+    <Content Include="phantomjs-license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

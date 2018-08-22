@@ -2056,7 +2056,7 @@
 				left: '10px',
 				top: '20px',
 				display: 'none',
-				zIndex: '999',
+				zIndex: '99999',
 				color: '#A1A9BE',
 				boxShadow: '2px 2px 3px #AAAAAA'
 			});

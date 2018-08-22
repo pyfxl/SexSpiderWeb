@@ -21,5 +21,10 @@ namespace BusinessBLL.ViewModel
         /// 域名
         /// </summary>
         public string Domain { get; set; }
+
+        /// <summary>
+        /// 缩略图
+        /// </summary>
+        public string Thumb { get; set; }
     }
 }

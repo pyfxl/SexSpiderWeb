@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,7 +7,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class SexSpiderWeb_GetImageJson4 : System.Web.UI.Page
-{    
+{
+    public static Logger log = LogManager.GetLogger("logsex");
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -20,7 +23,6 @@ public partial class SexSpiderWeb_GetImageJson4 : System.Web.UI.Page
                 BusinessBLL.SiteService service = new BusinessBLL.SiteService();
 
                 var sexSpider = service.GetSexSpider(siteId);
-
                 var lists = GetImages(sexSpider, Server.UrlDecode(url));
 
                 this.Repeater1.DataSource = lists;
@@ -45,8 +47,9 @@ public partial class SexSpiderWeb_GetImageJson4 : System.Web.UI.Page
                 lists = BusinessBLL.SiteHelper.GetListImagePage(sexSpider, url).ToList();
             }
         }
-        catch
+        catch (Exception ex)
         {
+            log.Error("图片错误", ex.Message);
         }
 
         return lists;

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Details.aspx.cs" Inherits="SexSpiderWeb_Details" %>
+﻿<%@ Page Title="站点列表" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Details.aspx.cs" Inherits="SexSpiderWeb_Details" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
@@ -6,15 +6,20 @@
     
     <div id="window"></div>
 
-    <div class="page-header">
-        <h1>
-            <span>站点列表</span>
-            <small>
-                <a href="javascript:history.go(-1);"><i class="ace-icon fa fa-angle-double-left"></i>
-                返回</a>
-            </small>
-        </h1>
-    </div><!-- /.page-header -->
+    <div class="row">
+        <div class="col-xs-6" id="page-title">
+            <h4>
+                <span>站点列表</span>
+            </h4>
+        </div>
+        <div class="col-xs-6">
+            <div class="tools pull-right">
+                <span class="pagetxt"></span>
+                <button class="k-button" id="prevButton">上页</button>
+                <button class="k-button" id="nextButton">下页</button>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-xs-12">
@@ -29,13 +34,14 @@
     <script>
 
         //var siteId = getUrlParam("siteId");
+        var page = 1;
         set_header();
 
         function set_header() {
             var siteName = getUrlParam("siteName");
             if ($.isEmptyObject(siteName)) {
             } else {
-                $(".page-header h1 span").text(decodeURI(siteName));
+                $("#page-title span").text(decodeURI(siteName));
             }
         }
 
@@ -47,18 +53,21 @@
             alert("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
         }
 
-        function initGrid(siteId) {
+        function initGrid(siteId, page) {
+            page = page || 1;
+            $(".pagetxt").text("page: " + page);
             $("#grid").kendoGrid({
                 dataSource: {
                     transport: {
                         read: {
-                            url: "GetDetailJson4.aspx?siteId=" + siteId + (getUrlParam("page") == null ? "" : "&page=" + getUrlParam("page")),
+                            url: "GetDetailJson4.aspx?siteId=" + siteId + (page == null ? "" : "&page=" + page),
                             dataType: "json"
                         }
                     },
                     schema: {
                         model: {
                             fields: {
+                                Thumb: { type: "string" },
                                 Title: { type: "string" },
                                 Domain: { type: "string" },
                                 Link: { type: "string" }
@@ -67,19 +76,27 @@
                     }
                 },
                 change: onChange,
+                dataBound: function () {
+                    $('img').jqthumb();
+                },
                 height: 490,
                 //toolbar: "",
                 columns: [
+                    {
+                        template: "<img src='#:Thumb#'/>",
+                        field: "Thumb",
+                        title: "缩略图"
+                    },
                     {
                         template: "<a href='javascript:;' onclick='f_open(" + siteId + ",\"#:Link#\")'>#:Title#</a>",
                         field: "Title",
                         title: "标题（单击查看图片）"
                     },
-                    {
-                        template: "<a href='#:Domain#' target='_blank'>#:Domain#</a>",
-                        field: "Domain",
-                        title: "域名"
-                    },
+                    //{
+                    //    template: "<a href='#:Domain#' target='_blank'>#:Domain#</a>",
+                    //    field: "Domain",
+                    //    title: "域名"
+                    //},
                     {
                         template: "<a href='#:Link#' target='_blank'>#:Link#</a>",
                         field: "Link",
@@ -109,25 +126,26 @@
                 height: _height,
                 title: "图片查看",
                 actions: ["Refresh", "Maximize", "Close"],
+                close: function () {
+                    try { pause(); } catch (e) { }
+                },
                 content: "GetImageJson4.aspx?siteId=" + _siteId + "&url=" + _url
             }).data("kendoWindow").open().center();
         }
 
-        function set_active() {
+        $("#prevButton").click(function () {            
             var siteId = getUrlParam("siteId");
-            if ($.isEmptyObject(siteId)) return;
+            page = page <= 1 ? 1 : page -= 1;
+            initGrid(siteId, page);
+            resizeGrid();
+        });
 
-            $("#site_menu").parent().addClass("open");
-
-            $("#site_menu li").each(function () {
-                var li = $(this);
-                li.removeClass("active");
-                var val = li.attr("value");
-                if (val == siteId) {
-                    li.addClass("active");
-                }
-            });
-        };
+        $("#nextButton").click(function () {
+            var siteId = getUrlParam("siteId");
+            page += 1;
+            initGrid(siteId, page);
+            resizeGrid();
+        });
 
     </script>
     
@@ -143,11 +161,11 @@
             //NProgress.done();
             var siteId = getUrlParam("siteId");
             initGrid(siteId);
-            set_active();
             set_header();
             resizeGrid();
         });
 
     </script>
+
 </asp:Content>
 

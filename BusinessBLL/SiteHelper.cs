@@ -3,6 +3,8 @@ using BusinessBLL.Models;
 using BusinessBLL.ViewModel;
 using CsQuery;
 using Newtonsoft.Json.Linq;
+using NLog;
+using NReco.PhantomJS;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,12 +13,15 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 
 namespace BusinessBLL
 {
     public class SiteHelper
     {
+        public static Logger log = LogManager.GetLogger("logsex");
+
         /// <summary>
         /// 取站点列表
         /// </summary>
@@ -26,10 +31,11 @@ namespace BusinessBLL
 
             //过滤站点
             html = FilterHtml(html, sex.SiteFilter);
+            html = ReplaceHtml(html, sex.SiteReplace);
 
             FilterChain chain = LoadFilter(sex.ListFilter);
 
-            if (sex.DocType == "json")
+            if (sex.DocType.Contains("json"))
             {
                 string[] root = Regex.Split(sex.ListDiv, "\\|\\|");
                 var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
@@ -41,6 +47,7 @@ namespace BusinessBLL
 
                     yield return new ListModel
                     {
+                        Thumb = item.Value<string>(child[2]),
                         Title = System.Net.WebUtility.HtmlDecode(item.Value<string>(child[0])),
                         Link = GetLink(item.Value<string>(child[1]), sex.Domain),
                         Domain = sex.Domain
@@ -50,20 +57,54 @@ namespace BusinessBLL
             else
             {
                 CQ _document = CQ.CreateDocument(html);
-                var content = _document[sex.ListDiv];
-                foreach (var item in content)
+
+                if (!string.IsNullOrWhiteSpace(sex.MainDiv))
                 {
-                    string _title = chain.DoFilter(item.InnerHTML);
-                    string _link = GetLink(item.Attributes["href"], sex.Domain);
-
-                    if (String.IsNullOrEmpty(_title)) continue;
-
-                    yield return new ListModel
+                    var main = _document[sex.MainDiv];
+                    foreach (var m in main)
                     {
-                        Title = System.Net.WebUtility.HtmlDecode(_title),
-                        Link = _link,
-                        Domain = sex.Domain
-                    };
+                        var ctx = CQ.Create(m.InnerHTML);
+                        var doc = ctx[sex.ListDiv];
+                        var item = doc[0];
+
+                        if (item == null) continue;
+
+                        string _title = chain.DoFilter(item.InnerHTML);
+                        string _link = GetLink(item.Attributes["href"], sex.Domain);
+
+                        if (String.IsNullOrEmpty(_title)) continue;
+
+                        var img = ctx[sex.ThumbDiv];
+                        var thumb = img[0];
+                        var imgtext = thumb == null ? "" : thumb.ToString();
+
+                        yield return new ListModel
+                        {
+                            Thumb = GetThumb(imgtext, sex.Domain),
+                            Title = System.Net.WebUtility.HtmlDecode(_title),
+                            Link = _link,
+                            Domain = sex.Domain
+                        };
+                    }
+                }
+                else
+                {
+                    var content = _document[sex.ListDiv];
+                    foreach (var item in content)
+                    {
+                        string _title = chain.DoFilter(item.InnerHTML);
+                        string _link = GetLink(item.Attributes["href"], sex.Domain);
+
+                        if (String.IsNullOrEmpty(_title)) continue;
+
+                        yield return new ListModel
+                        {
+                            Thumb = GetThumb(item.InnerHTML, sex.Domain),
+                            Title = System.Net.WebUtility.HtmlDecode(_title),
+                            Link = _link,
+                            Domain = sex.Domain
+                        };
+                    }
                 }
             }
         }
@@ -73,10 +114,11 @@ namespace BusinessBLL
         /// </summary>
         public static IEnumerable<ImageModel> GetListImage(SexSpider sex, string url)
         {
-            string html = GetHtmlContent(url, sex.PageEncode, sex.Domain);
+            string html = sex.DocType.Contains("ajax") ? GetJSContent(url, sex.PageEncode) : GetHtmlContent(url, sex.PageEncode, sex.Domain);
 
             //过滤站点
             html = FilterHtml(html, sex.SiteFilter);
+            html = ReplaceHtml(html, sex.SiteReplace);
 
             FilterChain chain = LoadFilter(sex.ImageFilter);
             
@@ -152,9 +194,10 @@ namespace BusinessBLL
 
             //过滤站点
             html = FilterHtml(html, sex.SiteFilter);
+            html = ReplaceHtml(html, sex.SiteReplace);
             
             CQ _document = CQ.CreateDocument(html);
-            var content = _document[sex.PageFilter];
+            var content = _document[sex.PageFilter];//取总页数
             foreach (var item in content)
             {
                 string str = HttpContext.Current.Server.HtmlDecode(item.InnerHTML);
@@ -173,6 +216,7 @@ namespace BusinessBLL
 
             //过滤站点
             html = FilterHtml(html, sex.SiteFilter);
+            html = ReplaceHtml(html, sex.SiteReplace);
 
             FilterChain chain = LoadFilter(sex.PageFilter);
             html = chain.DoFilter(html);
@@ -205,7 +249,7 @@ namespace BusinessBLL
         /// </summary>
         public static string GetHtmlContent2(string url, string encoding, string domain)
         {
-            WebClient client = new WebClient();
+            System.Net.WebClient client = new System.Net.WebClient();
             //client.Proxy = new WebProxy("127.0.0.1", 32438);
             client.Encoding = Encoding.GetEncoding(encoding);
             client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.13 Safari/537.36");
@@ -219,18 +263,28 @@ namespace BusinessBLL
         /// </summary>
         public static string GetHtmlContent(string url, string encode, string domain)
         {
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            //req.Proxy = new WebProxy("127.0.0.1", 8086);
-            req.AutomaticDecompression = DecompressionMethods.GZip;
-            req.Referer = domain;
-            req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.13 Safari/537.36";
-            
-            HttpWebResponse rep = (HttpWebResponse)req.GetResponse();
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)System.Net.WebRequest.Create(url);
+                //req.Proxy = new WebProxy("127.0.0.1", 8086);
+                req.AutomaticDecompression = DecompressionMethods.GZip;
+                req.Referer = domain;
+                req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.13 Safari/537.36";
+                req.Timeout = 10 * 1000;
 
-            Stream stream = rep.GetResponseStream();
-            StreamReader sr = new StreamReader(stream, Encoding.GetEncoding(encode));
+                using (var rep = (HttpWebResponse)req.GetResponse())
+                using (var stream = rep.GetResponseStream())
+                using (var sr = new StreamReader(stream, Encoding.GetEncoding(encode)))
+                {
+                    return sr.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("访问网络错误", url, ex.Message);
+            }
 
-            return sr.ReadToEnd();
+            return "";
         }
 
         /// <summary>
@@ -263,6 +317,8 @@ namespace BusinessBLL
         /// </summary>
         private static string GetLink(string url, string domain)
         {
+            if (url == null || url == "") return "";
+
             if(url.StartsWith("http://") || url.StartsWith("https://") || url.StartsWith("//"))
             {
                 return url;
@@ -278,6 +334,8 @@ namespace BusinessBLL
         /// </summary>
         private static string GetLink(string url, string _domain, string domain)
         {
+            if (url == null || url == "") return "";
+
             if (url.StartsWith("http://") || url.StartsWith("https://"))
             {
                 return url;
@@ -290,6 +348,52 @@ namespace BusinessBLL
             url = url.Replace("./", "").Replace("../", "");
 
             return _domain + url;
+        }
+
+        /// <summary>
+        /// 取缩略图
+        /// </summary>
+        private static string GetThumb(string str, string domain)
+        {
+            if (str == null || str == "") return "";
+            var img = "";
+
+            CQ _document = CQ.CreateDocument(str);
+            var content = _document["img"];
+            var item = content[0];
+
+            if (item == null)
+            {
+                if (str.IndexOf("background") != -1)
+                {
+                    Regex reg = new Regex(@"url\(([^)]*)\)");
+                    Match m = reg.Match(str);
+                    if (m.Success)
+                        img = m.Result("$1");
+                }
+            }
+            else
+            {
+                var attrs = new List<string> { "file", "data-original", "data-src", "zoomfile", "src" };
+
+                foreach (var s in attrs)
+                {
+                    if (item.HasAttribute(s))
+                    {
+                        img = item.Attributes[s];
+                        break;
+                    }                    
+                }
+            }
+
+            if (img == "") return "";
+
+            if (img.StartsWith("http://") || img.StartsWith("https://"))
+            {
+                return img;
+            }
+
+            return domain + img;
         }
 
         /// <summary>
@@ -344,6 +448,27 @@ namespace BusinessBLL
         }
         
         /// <summary>
+        /// 替换站点html
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        private static string ReplaceHtml(string html, string filter)
+        {
+            if (filter == null || filter == "") return html;
+
+            var jArray = Newtonsoft.Json.Linq.JArray.Parse(filter);
+            foreach(var arr in jArray)
+            {
+                string oldStr = HttpUtility.UrlDecode(arr["old"].ToString());
+                string newStr = HttpUtility.UrlDecode(arr["new"].ToString());
+                html = html.Replace(oldStr, newStr);
+            }
+
+            return html;
+        }
+
+        /// <summary>
         /// 过滤站点html
         /// </summary>
         /// <param name="html"></param>
@@ -351,6 +476,8 @@ namespace BusinessBLL
         /// <returns></returns>
         private static string FilterHtml(string html, string filter)
         {
+            if (filter == null || filter == "") return html;
+
             FilterChain chain = LoadFilter(filter);
             if (chain.Count() > 0)
             {
@@ -359,6 +486,48 @@ namespace BusinessBLL
 
             return html;
         }
-        
+
+        /// <summary>
+        /// 加载js动态内容
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private static string GetJSContent(string url, string encode)
+        {
+            string text = "";
+
+            var phantomJS = new PhantomJS();
+
+            // write result to stdout
+            //Console.WriteLine("Getting content from baidu.com directly to C# code...");
+            //var outFileHtml = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "baidu.html");
+            //if (File.Exists(outFileHtml))
+            //    File.Delete(outFileHtml);
+            using (var outFs = new MemoryStream())
+            {
+                try
+                {
+                    phantomJS.RunScript(string.Format(@"
+						var system = require('system');
+						var page = require('webpage').create();
+						page.open('{0}', function() {{
+							system.stdout.writeLine(page.content);
+							phantom.exit();
+						}});
+					", url), null, null, outFs);
+
+                    byte[] b = outFs.ToArray();
+                    text = System.Text.Encoding.GetEncoding(encode).GetString(b, 0, b.Length);
+                }
+                finally
+                {
+                    phantomJS.Abort(); // ensure that phantomjs.exe is stopped
+                }
+            }
+            //Console.WriteLine("Result is saved into " + outFileHtml);
+
+            return text;
+        }
+
     }
 }

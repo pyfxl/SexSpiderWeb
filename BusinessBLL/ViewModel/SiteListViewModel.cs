@@ -26,7 +26,9 @@ namespace BusinessBLL.ViewModel
         public string pageencode { get; set; }
         public string domain { get; set; }
         public string sitelink { get; set; }
+        public string maindiv { get; set; }
         public string listdiv { get; set; }
+        public string thumbdiv { get; set; }
         public string imagediv { get; set; }
         public string pagediv { get; set; }
         public string pagelevel { get; set; }
@@ -35,6 +37,7 @@ namespace BusinessBLL.ViewModel
         public string pagefilter { get; set; }
         public string doctype { get; set; }
         public string sitefilter { get; set; }
-        
+        public string sitereplace { get; set; }
+
     }
 }

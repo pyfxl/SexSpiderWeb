@@ -13,9 +13,10 @@ public partial class SexSpiderWeb_GetSiteJson4 : System.Web.UI.Page
         {
             string url = Request["_url"];
             string encode = Request["_encode"];
-            string domain = "";
+            string domain = Request["_domain"];
 
             string content = BusinessBLL.SiteHelper.GetHtmlContent(url, encode, domain);
+            if (content == "") throw new Exception("获取网站错误。");
 
             Response.Write("{\"result\":\"ok\"}");
             Response.End();

@@ -14,7 +14,7 @@ namespace BusinessBLL
 {
     public class SiteService
     {
-        public static Logger log = LogManager.GetCurrentClassLogger();
+        public static Logger log = LogManager.GetLogger("logsex");
 
         public SiteService()
         {

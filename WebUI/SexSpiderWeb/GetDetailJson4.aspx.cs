@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,8 @@ using System.Web.UI.WebControls;
 
 public partial class SexSpiderWeb_GetDetailJson4 : System.Web.UI.Page
 {
+    public static Logger log = LogManager.GetLogger("logsex");
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -45,8 +48,9 @@ public partial class SexSpiderWeb_GetDetailJson4 : System.Web.UI.Page
             GetNextPage(sexSpider, page);
             lists = BusinessBLL.SiteHelper.GetSiteList(sexSpider).ToList();
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
+            log.Error("列表错误", ex.Message);
         }
 
         return lists;

@@ -1,14 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="SexSpiderWeb_Default" %>
+﻿<%@ Page Title="首页" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="SexSpiderWeb_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    
-    <div class="page-header">
-        <h1>
-            首页
-        </h1>
-    </div><!-- /.page-header -->
 
     <div class="row">
         <div class="col-xs-12">
@@ -68,11 +62,14 @@
                                 doctype: { type: "string" },
                                 domain: { type: "string", validation: { required: true, validationMessage: "域名为必填项" } },
                                 sitelink: { type: "string", validation: { required: true, validationMessage: "链接为必填项" } },
+                                maindiv: { type: "string" },
                                 listdiv: { type: "string" },
+                                thumbdiv: { type: "string" },
                                 imagediv: { type: "string" },
                                 pagediv: { type: "string" },
                                 pagelevel: { type: "number", validation: { min: 0, max: 3 } },
                                 sitefilter: { type: "string" },
+                                sitereplace: { type: "string" },
                                 listfilter: { type: "string" },
                                 imagefilter: { type: "string" },
                                 pagefilter: { type: "string" }
@@ -95,7 +92,7 @@
                     columns: false
                 },
                 sortable: true,
-                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", iconClass: "k-icon k-i-refresh" }, { template: '<select id="required" multiple="multiple" data-placeholder="选择类别" style="width: 130px; float: right;"><option>A</option><option>B</option></select>' }],
+                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", iconClass: "k-icon k-i-refresh" }, { template: '<select id="required" multiple="multiple" data-placeholder="选择类别" style="width: 130px; float: right;"><option>A</option><option>B</option><option>C</option></select>' }],
                 //toolbar: kendo.template($("#template").html()),
                 columns: [
                     {
@@ -122,15 +119,11 @@
                         filterable: { multi: true }
                     },
                     {
-                        template: "<a href='Details.aspx?siteId=#:siteid#&siteName=#:encodeURI(encodeURI(sitename))#' target='_blank'>#:sitename#</a>",
+                        template: "<a class='stop' href='Details.aspx?siteId=#:siteid#&siteName=#:encodeURI(encodeURI(sitename))#' target='_blank'>#:sitename#</a>",
                         field: "sitename",
                         title: "名称（单击查看列表）",
-                        width: 200
-                    },
-                    {
-                        field: "listpage",
-                        title: "下一页",
-                        width: 200
+                        width: 200,
+                        attributes: { "class": "sitename" }
                     },
                     {
                         field: "pageencode",
@@ -145,7 +138,8 @@
                             });
                         },
                         width: 80,
-                        filterable: { multi: true }
+                        filterable: { multi: true },
+                        attributes: { "class": "pageencode" }
                     },
                     {
                         field: "doctype",
@@ -156,17 +150,34 @@
                         template: "<a href='#:domain#' target='_blank'>#:domain#</a>",
                         field: "domain",
                         title: "域名",
-                        width: 200
+                        width: 200,
+                        attributes: { "class": "domain" }
                     },
                     {
                         template: "<a href='#:sitelink#' target='_blank'>#:sitelink#</a>",
                         field: "sitelink",
                         title: "链接",
-                        width: 300
+                        width: 300,
+                        attributes: { "class": "sitelink" }
+                    },
+                    {
+                        field: "listpage",
+                        title: "下一页",
+                        width: 200
+                    },
+                    {
+                        field: "maindiv",
+                        title: "主要DIV",
+                        width: 200
                     },
                     {
                         field: "listdiv",
                         title: "列表DIV",
+                        width: 200
+                    },
+                    {
+                        field: "thumbdiv",
+                        title: "缩略图DIV",
                         width: 200
                     },
                     {
@@ -191,9 +202,14 @@
                         width: 150
                     },
                     {
+                        field: "sitereplace",
+                        title: "站点替换",
+                        width: 200
+                    },
+                    {
                         field: "listfilter",
                         title: "列表过滤",
-                        width: 150
+                        width: 200
                     },
                     {
                         field: "imagefilter",
@@ -227,16 +243,16 @@
             //custom actions
             $(".k-grid-content table[role='grid'] tr").each(function (i, v) {
 
-                var $title = $(v).find("td").eq(4);
-
-                var _url = $(v).find("td").eq(8).text();
-                var _encode = $(v).find("td").eq(6).text();
+                var $title = $(v).find(".sitename");
+                var _url = $(v).find(".sitelink").text();
+                var _encode = $(v).find(".pageencode").text();
+                var _domain = $(v).find(".domain").text();
 
                 setTimeout(function () {
                     $.ajax({
                         type: "POST",
                         //async: false,
-                        url: "GetSiteJson4.aspx?_url=" + encodeURIComponent(_url) + "&_encode=" + _encode,
+                        url: "GetSiteJson4.aspx?_url=" + encodeURIComponent(_url) + "&_encode=" + _encode+ "&_domain=" + _domain,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
@@ -251,7 +267,7 @@
                             f_loading($title, true);
                         }
                     });
-                }, 500 * i);
+                }, 1000 * i);
 
             });
         });
@@ -262,10 +278,6 @@
             } else {
                 obj.find("img").remove();
             }
-        }
-
-        function set_active() {
-            $(".nav-list li").eq(0).addClass("active");
         }
 
     </script>
