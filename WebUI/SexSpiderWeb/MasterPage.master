@@ -66,8 +66,10 @@
 
         //重设大小
         function resizeGrid() {
+            //debugger;
+
             //是否手机
-            if ('ontouchstart' in document.documentElement) return;
+            //if ('ontouchstart' in document.documentElement) return;
 
             var grid = $("#grid");
             var contentArea = grid.find(".k-grid-content");
@@ -88,27 +90,14 @@
             resizeTimer = setTimeout(function () { resizeGrid(); }, 500);
         });
 
+        //小屏幕
+        function IsSmallScreen() {
+            return $(window).width() < 768;
+        }
+
         jQuery(function ($) {
-
-            // 参数配置
-            //ace.settingFunction.navbar_fixed(null, true);
-            //ace.settingFunction.sidebar_fixed(null, true);
-            //ace.settingFunction.breadcrumbs_fixed(null, true);
-
             // kendo ui
             kendo.culture("zh-CN");
-            
-            // 左边菜单
-            $(function () {
-                $.get("GetListJson4.aspx", function (data) {
-                    $.each(data, function (i, item) {
-                        var siteName = encodeURI(encodeURI(item.sitename));
-                        $("#site_menu").append('<li class="" value=' + item.siteid + '><a data-pjax href="Details.aspx?siteId=' + item.siteid + '&siteName=' + siteName + '"><i class="menu-icon fa fa-caret-right"></i><span class="menu-text">' + item.sitename + '</span></a><b class="arrow"></b></li>');
-                    });
-                    // 设置active
-                    try{ set_active(); }catch(e){}
-                }, "json");
-            });
         })
 
     </script>

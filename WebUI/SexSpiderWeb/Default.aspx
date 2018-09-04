@@ -1,4 +1,4 @@
-﻿<%@ Page Title="首页" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="SexSpiderWeb_Default" %>
+﻿<%@ Page Title="首页 - SexSpider" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="SexSpiderWeb_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>

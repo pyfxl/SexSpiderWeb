@@ -18,7 +18,7 @@
         </asp:Repeater>
         <div>
 	        <script type="text/javascript" src="chplayer/chplayer.js"></script>
-	        <div id="video" style="width:100%; height:430px; display:none;"></div>
+	        <div id="video" style="width: 100%; display: none;"></div>
 	        <script type="text/javascript">
                 var player;
                 function play(url, hls) {
@@ -40,6 +40,10 @@
                 function remove() {
                     player.removeChild();
                 }
+
+                $(function () {
+                    $("#video").height($("#window").height() - 25);
+                });
 	        </script>
 	    </div>
     </form>

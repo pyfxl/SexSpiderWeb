@@ -1,4 +1,4 @@
-﻿<%@ Page Title="站点列表" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Details.aspx.cs" Inherits="SexSpiderWeb_Details" %>
+﻿<%@ Page Title="站点列表 - SexSpider" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Details.aspx.cs" Inherits="SexSpiderWeb_Details" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
@@ -53,6 +53,7 @@
             alert("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
         }
 
+        //列表grid
         function initGrid(siteId, page) {
             page = page || 1;
             $(".pagetxt").text("page: " + page);
@@ -106,13 +107,15 @@
             });
         }
 
+        //弹出window
         function f_open(siteId, url) {
             var _width = "75%";
             var _height = "75%";
 
             //是否手机
-            if ('ontouchstart' in document.documentElement) {
+            if (IsSmallScreen()) {
                 _width = "95%";
+                _height = "85%";
             }
 
             //清除内容
@@ -147,17 +150,12 @@
             resizeGrid();
         });
 
-    </script>
-    
-    <script>
         //$.pjax.defaults.cache = false;
-
-        $(document).pjax('a[data-pjax]', '#main', { fragment: '#main', timeout: 8000 });
+        //$(document).pjax('a[data-pjax]', '#main', { fragment: '#main', timeout: 8000 });
         //$(document).pjax('[data-pjax] a, a[data-pjax]', '#pjax-container');
-
         //$(document).on('ready pjax:start', function () { NProgress.start(); });
 
-        $(document).on('ready pjax:end', function (event) {
+        $(document).ready(function() {
             //NProgress.done();
             var siteId = getUrlParam("siteId");
             initGrid(siteId);

@@ -35,7 +35,7 @@ namespace BusinessBLL
 
             FilterChain chain = LoadFilter(sex.ListFilter);
 
-            if (sex.DocType.Contains("json"))
+            if (sex.DocType != null && sex.DocType.Contains("json"))
             {
                 string[] root = Regex.Split(sex.ListDiv, "\\|\\|");
                 var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
@@ -114,7 +114,7 @@ namespace BusinessBLL
         /// </summary>
         public static IEnumerable<ImageModel> GetListImage(SexSpider sex, string url)
         {
-            string html = sex.DocType.Contains("ajax") ? GetJSContent(url, sex.PageEncode) : GetHtmlContent(url, sex.PageEncode, sex.Domain);
+            string html = sex.DocType != null && sex.DocType.Contains("ajax") ? GetJSContent(url, sex.PageEncode) : GetHtmlContent(url, sex.PageEncode, sex.Domain);
 
             //过滤站点
             html = FilterHtml(html, sex.SiteFilter);
