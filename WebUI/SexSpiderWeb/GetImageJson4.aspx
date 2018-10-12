@@ -42,7 +42,7 @@
                 }
 
                 $(function () {
-                    $("#video").height($("#window").height() - 25);
+                    $("#video").height($("#window").height() - 30);
                 });
 	        </script>
 	    </div>

@@ -110,12 +110,12 @@
         //弹出window
         function f_open(siteId, url) {
             var _width = "75%";
-            var _height = "75%";
+            var _height = $(window).innerHeight() - 100;
 
             //是否手机
             if (IsSmallScreen()) {
                 _width = "95%";
-                _height = "85%";
+                //_height = "85%";
             }
 
             //清除内容

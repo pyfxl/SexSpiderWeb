@@ -92,7 +92,7 @@
                     columns: false
                 },
                 sortable: true,
-                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", iconClass: "k-icon k-i-refresh" }, { template: '<select id="required" multiple="multiple" data-placeholder="选择类别" style="width: 130px; float: right;"><option>A</option><option>B</option><option>C</option></select>' }],
+                toolbar: ["create", "save", "cancel", { name: "refresh", text: "刷新", iconClass: "k-icon k-i-refresh" }, { template: '<select id="required" multiple="multiple" data-placeholder="选择类别" style="width: 90px; float: right;"><option>A</option><option>B</option><option>C</option></select>' }],
                 //toolbar: kendo.template($("#template").html()),
                 columns: [
                     {
