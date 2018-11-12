@@ -27,7 +27,7 @@ namespace BusinessBLL
         /// </summary>
         public static IEnumerable<ListModel> GetSiteList(SexSpider sex)
         {
-            string html = GetHtmlContent(sex.SiteLink, sex.PageEncode, sex.Domain);
+            string html = sex.DocType != null && sex.DocType.Contains("ajax") ? GetJSContent(sex.SiteLink, sex.PageEncode) : GetHtmlContent(sex.SiteLink, sex.PageEncode, sex.Domain);
 
             //过滤站点
             html = FilterHtml(html, sex.SiteFilter);
@@ -508,13 +508,13 @@ namespace BusinessBLL
                 try
                 {
                     phantomJS.RunScript(string.Format(@"
-						var system = require('system');
-						var page = require('webpage').create();
-						page.open('{0}', function() {{
-							system.stdout.writeLine(page.content);
-							phantom.exit();
-						}});
-					", url), null, null, outFs);
+                        var system = require('system');
+                        var page = require('webpage').create();
+                        page.open('{0}', function() {{
+                            system.stdout.writeLine(page.content);
+                            phantom.exit();
+                        }});
+                    ", url), null, null, outFs);
 
                     byte[] b = outFs.ToArray();
                     text = System.Text.Encoding.GetEncoding(encode).GetString(b, 0, b.Length);

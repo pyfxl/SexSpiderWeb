@@ -58,8 +58,9 @@ namespace BusinessBLL
                     db.SaveChanges();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                log.Error(ex.Message);
             }
         }
 
@@ -82,8 +83,9 @@ namespace BusinessBLL
                     });
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                log.Error(ex.Message);
             }
         }
 
@@ -104,8 +106,9 @@ namespace BusinessBLL
                     });
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                log.Error(ex.Message);
             }
         }
 

@@ -99,29 +99,34 @@
                         template: "#:siteid# <a class=\"k-icon k-i-delete k-grid-delete\" href=\"javascript:;\"></a>",
                         field: "siteid",
                         title: "编号",
+                        locked: true,
                         width: 80
                     },
                     {
                         field: "siterank",
                         title: "排序",
+                        locked: true,
                         width: 80
                     },
                     {
                         field: "viplevel",
                         title: "VIP",
+                        locked: true,
                         width: 80,
                         filterable: { multi: true }
                     },
                     {
                         field: "ishided",
                         title: "隐藏",
+                        locked: true,
                         width: 80,
                         filterable: { multi: true }
                     },
                     {
-                        template: "<a class='stop' href='Details.aspx?siteId=#:siteid#&siteName=#:encodeURI(encodeURI(sitename))#' target='_blank'>#:sitename#</a>",
+                        template: "<a class='a-stop' href='Details.aspx?siteId=#:siteid#&siteName=#:encodeURI(encodeURI(sitename))#' target='_blank'>#:sitename#</a>",
                         field: "sitename",
                         title: "名称（单击查看列表）",
+                        locked: true,
                         width: 200,
                         attributes: { "class": "sitename" }
                     },
@@ -147,14 +152,14 @@
                         width: 80
                     },
                     {
-                        template: "<a href='#:domain#' target='_blank'>#:domain#</a>",
+                        template: "<a class='a-stop' href='#:domain#' target='_blank'>#:domain#</a>",
                         field: "domain",
                         title: "域名",
                         width: 200,
                         attributes: { "class": "domain" }
                     },
                     {
-                        template: "<a href='#:sitelink#' target='_blank'>#:sitelink#</a>",
+                        template: "<a class='a-stop' href='#:sitelink#' target='_blank'>#:sitelink#</a>",
                         field: "sitelink",
                         title: "链接",
                         width: 300,
@@ -237,6 +242,11 @@
 
             resizeGrid();
 
+        });
+
+        //阻止a事件冒泡
+        $("#grid").on("click", ".a-stop", function (event) {
+            event.stopPropagation();
         });
 
         $("#grid").on("click", ".k-grid-refresh", function () {

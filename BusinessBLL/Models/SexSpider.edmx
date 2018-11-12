@@ -52,7 +52,7 @@
           <Property Name="SiteName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ListPage" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PageEncode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Domain" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SiteLink" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="MainDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ThumbDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

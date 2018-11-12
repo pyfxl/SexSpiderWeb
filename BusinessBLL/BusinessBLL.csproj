@@ -95,11 +95,6 @@
     <Compile Include="Filter\NoNumberFilter.cs" />
     <Compile Include="Filter\NoSpanFilter.cs" />
     <Compile Include="Filter\SplitTitleFilter.cs" />
-    <Compile Include="Models\SexSpider1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SexSpider.tt</DependentUpon>
-    </Compile>
     <Compile Include="SiteService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\ImageModel.cs" />
@@ -159,7 +154,9 @@
     <Content Include="phantomjs-license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SubFolder\Model\SampleOutput.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

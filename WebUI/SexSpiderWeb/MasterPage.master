@@ -19,7 +19,9 @@
     <script src="../Scripts/bootstrap.min.js"></script>
 
     <!-- kendo ui -->
-    <link href="../theme/kendoui/styles/kendo.default-v2.min.css" rel="stylesheet" />
+    <link href="../theme/kendoui/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="../theme/kendoui/styles/kendo.uniform.min.css" rel="stylesheet" />
+    <link href="../theme/kendoui/styles/kendo.uniform.mobile.min.css" rel="stylesheet" />
     <script src="../theme/kendoui/js/kendo.all.min.js"></script>
     <script src="../theme/kendoui/js/cultures/kendo.culture.zh-CN.min.js"></script>
     <script src="../theme/kendoui/js/messages/kendo.messages.zh-CN.min.js"></script>
