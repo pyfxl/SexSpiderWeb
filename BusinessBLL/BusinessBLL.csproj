@@ -81,6 +81,7 @@
     <Compile Include="Filter\GetImageFilter.cs" />
     <Compile Include="Filter\GetJpgFilter.cs" />
     <Compile Include="Filter\GetFlashFilter.cs" />
+    <Compile Include="Filter\FengNiaoFilter.cs" />
     <Compile Include="Filter\GetMp4Filter.cs" />
     <Compile Include="Filter\GetSpanFilter.cs" />
     <Compile Include="Filter\GetTextareaFilter.cs" />

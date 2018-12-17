@@ -40,7 +40,18 @@ namespace BusinessBLL
                 string[] root = Regex.Split(sex.ListDiv, "\\|\\|");
                 var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
                 var jToken = jObject[root[0]];
-                
+
+                string[] m = root[0].Split('&');
+                switch (m.Length)
+                {
+                    case 2:
+                        jToken = jObject[m[0]][m[1]];
+                        break;
+                    case 3:
+                        jToken = jObject[m[0]][m[1]][m[2]];
+                        break;
+                }
+
                 foreach (var item in jToken)
                 {
                     string[] child = root[1].Split('&');
@@ -121,30 +132,67 @@ namespace BusinessBLL
             html = ReplaceHtml(html, sex.SiteReplace);
 
             FilterChain chain = LoadFilter(sex.ImageFilter);
-            
-            CQ _document = CQ.CreateDocument(html);
-            var content = _document[sex.ImageDiv];
-            foreach (var item in content)
+
+            if (sex.DocType != null && sex.DocType.Contains("json"))
             {
-                string link = "";
-                if (chain.Count() > 0)
+                html = chain.DoFilter(html);
+
+                string[] root = Regex.Split(sex.ImageDiv, "\\|\\|");
+                var jObject = Newtonsoft.Json.Linq.JObject.Parse(html);
+                var jToken = jObject[root[0]];
+
+                string[] m = root[0].Split('&');
+                switch (m.Length)
                 {
-                    link = chain.DoFilter(item.OuterHTML);
+                    case 2:
+                        jToken = jObject[m[0]][m[1]];
+                        break;
+                    case 3:
+                        jToken = jObject[m[0]][m[1]][m[2]];
+                        break;
                 }
-                else
+
+                foreach (var item in jToken)
                 {
-                    link = item.Attributes["src"];
+                    string[] child = root[1].Split('&');
+
+                    string link = item.Value<string>(child[0]);
+
+                    string _image = GetLink(link, sex.Domain);
+
+                    yield return new ImageModel
+                    {
+                        ImageUrl = _image,
+                        ImageDomain = sex.Domain
+                    };
                 }
-
-                if (String.IsNullOrEmpty(link)) continue;
-
-                string _image = GetLink(link, sex.Domain);
-
-                yield return new ImageModel
+            }
+            else
+            {
+                CQ _document = CQ.CreateDocument(html);
+                var content = _document[sex.ImageDiv];
+                foreach (var item in content)
                 {
-                    ImageUrl = _image,
-                    ImageDomain = sex.Domain
-                };
+                    string link = "";
+                    if (chain.Count() > 0)
+                    {
+                        link = chain.DoFilter(item.OuterHTML);
+                    }
+                    else
+                    {
+                        link = item.Attributes["src"];
+                    }
+
+                    if (String.IsNullOrEmpty(link)) continue;
+
+                    string _image = GetLink(link, sex.Domain);
+
+                    yield return new ImageModel
+                    {
+                        ImageUrl = _image,
+                        ImageDomain = sex.Domain
+                    };
+                }
             }
         }
 
