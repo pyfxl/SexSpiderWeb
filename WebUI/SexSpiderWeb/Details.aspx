@@ -1,25 +1,13 @@
 ﻿<%@ Page Title="站点列表 - SexSpider" Language="C#" MasterPageFile="~/SexSpiderWeb/MasterPage.master" AutoEventWireup="true" CodeFile="Details.aspx.cs" Inherits="SexSpiderWeb_Details" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style type="text/css">
+        .k-grid-toolbar { text-align: right; }
+    </style>    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     
     <div id="window"></div>
-
-    <div class="row">
-        <div class="col-xs-6" id="page-title">
-            <h4>
-                <span>站点列表</span>
-            </h4>
-        </div>
-        <div class="col-xs-6">
-            <div class="tools pull-right">
-                <span class="pagetxt"></span>
-                <button class="k-button" id="prevButton">上页</button>
-                <button class="k-button" id="nextButton">下页</button>
-            </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-xs-12">
@@ -30,85 +18,122 @@
             <!-- PAGE CONTENT ENDS -->
         </div><!-- /.col -->
     </div><!-- /.row -->
-     
+         
     <script>
+        var siteId = <%=siteId%>, siteName = "<%=siteName%>", page = 1, resizeTimer;
+        var winImage = $("#window").data("kendoWindow");
 
-        //var siteId = getUrlParam("siteId");
-        var page = 1;
-        set_header();
+        $(document).ready(function() {
+            
+            //刷新高度
+            resizeMain();
 
-        function set_header() {
-            var siteName = getUrlParam("siteName");
-            if ($.isEmptyObject(siteName)) {
-            } else {
-                $("#page-title span").text(decodeURI(siteName));
-            }
-        }
-
-        function onChange(arg) {
-            var selected = $.map(this.select(), function (item) {
-                return $(item).text();
-            });
-
-            alert("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
-        }
-
-        //列表grid
-        function initGrid(siteId, page) {
-            page = page || 1;
-            $(".pagetxt").text("page: " + page);
-            $("#grid").kendoGrid({
+            var grid = $("#grid").kendoGrid({
                 dataSource: {
                     transport: {
                         read: {
-                            url: "GetDetailJson4.aspx?siteId=" + siteId + (page == null ? "" : "&page=" + page),
-                            dataType: "json"
+                            url: "api/DetailQuery.aspx?siteId=" + siteId + "&page=" + page,
+                            dataType: "json",
+                            cache: false
                         }
                     },
                     schema: {
                         model: {
                             fields: {
-                                Thumb: { type: "string" },
-                                Title: { type: "string" },
-                                Domain: { type: "string" },
-                                Link: { type: "string" }
+                                thumb: { type: "string" },
+                                title: { type: "string" },
+                                domain: { type: "string" },
+                                link: { type: "string" }
                             }
                         }
+                    },
+                    requestEnd: function (e) {
+                        var grid = $("#grid").data("kendoGrid");
+                        grid.element.find(".k-grid-content").scrollTop(0);
                     }
                 },
-                change: onChange,
-                dataBound: function () {
-                    $('img').jqthumb();
-                },
-                height: 490,
-                //toolbar: "",
+                scrollable: true,
+                sortable: false,
+                pageable: false,
+                toolbar: [                   
+                    {
+                        name: "name",
+                        template: "<p class='bar-name pull-left'><%=siteName%></p>"
+                    },
+                    { 
+                        name: "refresh", 
+                        text: "刷新", 
+                        iconClass: "k-icon k-i-refresh" 
+                    }, 
+                    { 
+                        name: "prevPage", 
+                        text: "上页", 
+                        iconClass: "k-icon k-i-arrow-chevron-left" 
+                    }, 
+                    { 
+                        name: "nextPage", 
+                        text: "下页", 
+                        iconClass: "k-icon k-i-arrow-chevron-right" 
+                    }
+                ],
                 columns: [
                     {
-                        template: "<img src='#:Thumb#'/>",
-                        field: "Thumb",
-                        title: "缩略图"
+                        template: "<img src='#:thumb#' title='' />",
+                        field: "thumb",
+                        title: "缩略图",
+                        width: "33%"
                     },
                     {
-                        template: "<a href='javascript:;' onclick='f_open(" + siteId + ",\"#:Link#\")'>#:Title#</a>",
-                        field: "Title",
-                        title: "标题（单击查看图片）"
+                        template: "<a href='javascript:;' onclick='openWin(<%=siteId%>,\"#:link#\")'>#:title#</a>",
+                        field: "title",
+                        title: "标题（单击查看图片）",
+                        width: "34%"
                     },
-                    //{
-                    //    template: "<a href='#:Domain#' target='_blank'>#:Domain#</a>",
-                    //    field: "Domain",
-                    //    title: "域名"
-                    //},
                     {
-                        template: "<a href='#:Link#' target='_blank'>#:Link#</a>",
-                        field: "Link",
-                        title: "链接"
+                        template: "<a href='#:link#' target='_blank'>#:link#</a>",
+                        field: "link",
+                        title: "链接",
+                        width: "33%"
                     }
-                ]
+                ],
+                noRecords: false,
+                dataBound: function () {
+                    $('#grid img').jqthumb();
+                }
             });
+          
+            $(window).resize(function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () { 
+                    resizeMain();
+                    $("#grid").data("kendoGrid").resize();
+                }, 200);
+            });
+
+        });
+
+        $("#grid").on("click", ".k-grid-refresh", function () {
+            reloadGrid();
+        });
+
+        $("#grid").on("click", ".k-grid-nextPage", function () {
+            page += 1;
+            reloadGrid();
+        });
+
+        $("#grid").on("click", ".k-grid-prevPage", function () {
+            page > 1 ? page -= 1 : page = 1;
+            reloadGrid();
+        });
+
+        function reloadGrid() {
+            var grid = $("#grid").data("kendoGrid");
+            grid.dataSource.transport.options.read.url = "api/DetailQuery.aspx?siteId=" + siteId + "&page=" + page;
+            grid.dataSource.read();
         }
 
         //弹出window
-        function f_open(siteId, url) {
+        function openWin(siteId, url) {
             var _width = "75%";
             var _height = $(window).innerHeight() - 100;
 
@@ -123,46 +148,35 @@
 
             var _siteId = siteId;
             var _url = encodeURIComponent(url);
-  
-            var dialog = $("#window").kendoWindow({
-                width: _width,
-                height: _height,
-                title: "图片查看",
-                actions: ["Refresh", "Maximize", "Close"],
-                close: function () {
-                    try { pause(); } catch (e) { }
-                },
-                content: "GetImageJson4.aspx?siteId=" + _siteId + "&url=" + _url
-            }).data("kendoWindow").open().center();
+            var _viewUrl = "Images.aspx?siteId=" + _siteId + "&url=" + _url
+
+            if (!winImage) {
+                winImage = $("#window").kendoWindow({
+                    width: _width,
+                    height: _height,
+                    title: "图片查看",
+                    actions: ["Refresh", "Maximize", "Close"],
+                    close: function () {
+                        try { $(".k-content-frame")[0].contentWindow.pause(); } catch (e) { }
+                    },
+                    open: onOpen,
+                    refresh: onRefresh,
+                    content: _viewUrl,
+                    iframe: true
+                }).data("kendoWindow");
+            } else {
+                winImage.refresh(_viewUrl);
+            }
+            winImage.open().center();
         }
 
-        $("#prevButton").click(function () {            
-            var siteId = getUrlParam("siteId");
-            page = page <= 1 ? 1 : page -= 1;
-            initGrid(siteId, page);
-            resizeGrid();
-        });
-
-        $("#nextButton").click(function () {
-            var siteId = getUrlParam("siteId");
-            page += 1;
-            initGrid(siteId, page);
-            resizeGrid();
-        });
-
-        //$.pjax.defaults.cache = false;
-        //$(document).pjax('a[data-pjax]', '#main', { fragment: '#main', timeout: 8000 });
-        //$(document).pjax('[data-pjax] a, a[data-pjax]', '#pjax-container');
-        //$(document).on('ready pjax:start', function () { NProgress.start(); });
-
-        $(document).ready(function() {
-            //NProgress.done();
-            var siteId = getUrlParam("siteId");
-            initGrid(siteId);
-            set_header();
-            resizeGrid();
-        });
-
+        function onOpen(e) {
+           kendo.ui.progress(e.sender.element, true);
+        }
+ 
+        function onRefresh(e) {
+           kendo.ui.progress(e.sender.element, false);
+        }
     </script>
 
 </asp:Content>

@@ -4,15 +4,15 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SexSpiderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SexSpiderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="SexSpider">
           <Key>
             <PropertyRef Name="SiteId" />
           </Key>
           <Property Name="SiteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SiteRank" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SiteRank" Type="nvarchar(max)" Nullable="false" />
           <Property Name="VipLevel" Type="tinyint" Nullable="false" />
-          <Property Name="IsHided" Type="tinyint" Nullable="false" />
+          <Property Name="IsHided" Type="bit" Nullable="false" />
           <Property Name="SiteName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ListPage" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="PageEncode" Type="nvarchar" MaxLength="10" Nullable="false" />
@@ -20,16 +20,18 @@
           <Property Name="SiteLink" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="MainDiv" Type="nvarchar" MaxLength="50" />
           <Property Name="ThumbDiv" Type="nvarchar" MaxLength="50" />
-          <Property Name="ListDiv" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ImageDiv" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ListDiv" Type="nvarchar" MaxLength="50" />
+          <Property Name="ImageDiv" Type="nvarchar" MaxLength="50" />
           <Property Name="PageDiv" Type="nvarchar" MaxLength="50" />
-          <Property Name="PageLevel" Type="tinyint" Nullable="false" />
+          <Property Name="PageLevel" Type="tinyint" />
           <Property Name="ListFilter" Type="nvarchar" MaxLength="50" />
           <Property Name="ImageFilter" Type="nvarchar" MaxLength="50" />
           <Property Name="PageFilter" Type="nvarchar" MaxLength="50" />
           <Property Name="DocType" Type="nvarchar" MaxLength="10" />
           <Property Name="SiteFilter" Type="nvarchar" MaxLength="50" />
           <Property Name="SiteReplace" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LastStart" Type="nvarchar" MaxLength="50" />
+          <Property Name="ImgType" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityContainer Name="SexSpiderModelStoreContainer">
           <EntitySet Name="SexSpider" EntityType="Self.SexSpider" Schema="dbo" store:Type="Tables" />
@@ -46,26 +48,28 @@
             <PropertyRef Name="SiteId" />
           </Key>
           <Property Name="SiteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SiteRank" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SiteRank" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="VipLevel" Type="Byte" Nullable="false" />
-          <Property Name="IsHided" Type="Byte" Nullable="false" />
+          <Property Name="IsHided" Type="Boolean" Nullable="false" />
           <Property Name="SiteName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ListPage" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PageEncode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Domain" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SiteLink" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="MainDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ThumbDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ListDiv" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ImageDiv" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ListDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImageDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PageDiv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PageLevel" Type="Byte" Nullable="false" />
+          <Property Name="PageLevel" Type="Byte" />
           <Property Name="ListFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ImageFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PageFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DocType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="SiteFilter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SiteReplace" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LastStart" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImgType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -76,6 +80,8 @@
           <EntitySetMapping Name="SexSpider">
             <EntityTypeMapping TypeName="SexSpiderModel.SexSpider">
               <MappingFragment StoreEntitySet="SexSpider">
+                <ScalarProperty Name="ImgType" ColumnName="ImgType" />
+                <ScalarProperty Name="LastStart" ColumnName="LastStart" />
                 <ScalarProperty Name="SiteReplace" ColumnName="SiteReplace" />
                 <ScalarProperty Name="SiteFilter" ColumnName="SiteFilter" />
                 <ScalarProperty Name="DocType" ColumnName="DocType" />

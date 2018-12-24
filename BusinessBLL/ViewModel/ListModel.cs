@@ -26,5 +26,10 @@ namespace BusinessBLL.ViewModel
         /// 缩略图
         /// </summary>
         public string Thumb { get; set; }
+
+        /// <summary>
+        /// 某些json类型，需要最后开始id
+        /// </summary>
+        public string LastStart { get; set; }
     }
 }

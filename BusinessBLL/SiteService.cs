@@ -1,6 +1,8 @@
 ﻿using BusinessBLL.Models;
 using BusinessBLL.ViewModel;
 using Mapster;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -16,9 +18,25 @@ namespace BusinessBLL
     {
         public static Logger log = LogManager.GetLogger("logsex");
 
+        JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        {
+            // 设置为驼峰命名
+            ContractResolver = new LowercaseContractResolver()
+        };
+
+        public class LowercaseContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+        {
+            /// <summary>
+            /// webapi返回的json属性全部小写
+            /// </summary>
+            protected override string ResolvePropertyName(string propertyName)
+            {
+                return propertyName.ToLower();
+            }
+        }
+
         public SiteService()
         {
-
         }
 
         public string GetSiteList()
@@ -31,9 +49,7 @@ namespace BusinessBLL
                 {
                     var sexSpiders = db.SexSpider.OrderBy(s => s.SiteRank).ToList();
 
-                    var models = sexSpiders.Adapt<List<SexSpider>, List<SiteListViewModel>> ();
-
-                    html = Newtonsoft.Json.JsonConvert.SerializeObject(models);
+                    html = Newtonsoft.Json.JsonConvert.SerializeObject(sexSpiders, serializerSettings);
                 }
             }
             catch(Exception ex)
@@ -48,13 +64,11 @@ namespace BusinessBLL
         {
             try
             {
-                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
-
-                var models = jsonObject.Adapt<List<SiteListViewModel>, List<SexSpider>>();
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<SexSpider>>(jsonHtml);
 
                 using (var db = new SexSpiderDbContext())
                 {
-                    db.SexSpider.AddRange(models);
+                    db.SexSpider.AddRange(jsonObject);
                     db.SaveChanges();
                 }
             }
@@ -68,13 +82,11 @@ namespace BusinessBLL
         {
             try
             {
-                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
-
-                var models = jsonObject.Adapt<List<SiteListViewModel>, List<SexSpider>>();
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<SexSpider>>(jsonHtml);
 
                 using (var db = new SexSpiderDbContext())
                 {
-                    models.ForEach(s =>
+                    jsonObject.ToList().ForEach(s =>
                     {
                         db.SexSpider.Attach(s);
                         DbEntityEntry<SexSpider> entry = db.Entry(s);
@@ -93,13 +105,11 @@ namespace BusinessBLL
         {
             try
             {
-                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SiteListViewModel>>(jsonHtml);
-
-                var models = jsonObject.Adapt<List<SiteListViewModel>, List<SexSpider>>();
+                var jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<SexSpider>>(jsonHtml);
 
                 using (var db = new SexSpiderDbContext())
                 {
-                    models.ForEach(s =>
+                    jsonObject.ToList().ForEach(s =>
                     {
                         db.SexSpider.Remove(db.SexSpider.Where(a => a.SiteId == s.SiteId).FirstOrDefault());
                         db.SaveChanges();

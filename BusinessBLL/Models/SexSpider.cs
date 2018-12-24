@@ -17,7 +17,7 @@ namespace BusinessBLL.Models
         public int SiteId { get; set; }
         public string SiteRank { get; set; }
         public byte VipLevel { get; set; }
-        public byte IsHided { get; set; }
+        public bool IsHided { get; set; }
         public string SiteName { get; set; }
         public string ListPage { get; set; }
         public string PageEncode { get; set; }
@@ -28,12 +28,14 @@ namespace BusinessBLL.Models
         public string ListDiv { get; set; }
         public string ImageDiv { get; set; }
         public string PageDiv { get; set; }
-        public byte PageLevel { get; set; }
+        public Nullable<byte> PageLevel { get; set; }
         public string ListFilter { get; set; }
         public string ImageFilter { get; set; }
         public string PageFilter { get; set; }
         public string DocType { get; set; }
         public string SiteFilter { get; set; }
         public string SiteReplace { get; set; }
+        public string LastStart { get; set; }
+        public string ImgType { get; set; }
     }
 }
